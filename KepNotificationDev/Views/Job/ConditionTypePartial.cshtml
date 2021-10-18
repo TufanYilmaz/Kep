@@ -1,0 +1,20 @@
+﻿@Html.DevExpress().ComboBox(settings =>
+{
+    settings.Name = "ConditionType";
+    settings.CallbackRouteValues = new { Controller = "Job", Action = "ConditionTypePartial" };
+    //settings.Properties.ValueField = "";
+    //settings.Properties.TextField = "";
+    settings.Properties.ValueType = typeof(KepNotificationDev.Helpers.Service.ConditionType);
+    settings.Properties.ClientSideEvents.SelectedIndexChanged =
+    "function(s, e) { "+
+"TimesType.PerformCallback(); "+
+"if(s.GetValue()=='Zaman')"+
+"{" +
+"var item = jobEditFormLayout.GetItemByName(\"IntervalValue\");  " +
+"item.SetVisible(true);"+
+"}else{"+
+"item.SetVisible(false);}" +
+"}";
+    settings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+    settings.Properties.DataSource = System.Enum.GetValues(typeof(KepNotificationDev.Helpers.Service.ConditionType));
+}).BindList(System.Enum.GetValues(typeof(KepNotificationDev.Helpers.Service.ConditionType))).GetHtml()  

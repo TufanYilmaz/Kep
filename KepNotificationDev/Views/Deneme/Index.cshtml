@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Deneme</h2>
+
+
+@Html.DevExpress().QueryBuilder(settings =>
+{
+    settings.Name = "QueryBuilderDeneme";
+    settings.RouteValues = new { Controller = "Deneme", Action = "Invoke" };
+}).Bind("AbysisDbConn").GetHtml()
+
+

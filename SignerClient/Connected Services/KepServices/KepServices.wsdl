@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetKepMessageList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SessionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IDList" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetKepMessageListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetKepMessageListResult" type="tns:KepMessageListResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="KepMessageListResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseResult">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Value" type="tns:ArrayOfKepMessage" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BaseResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Result" type="tns:Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ResultType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Info" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="KepMessageAttachmentsResult">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BaseResult">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Value" type="tns:ArrayOfKepMessageAttachment" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfKepMessageAttachment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="KepMessageAttachment" nillable="true" type="tns:KepMessageAttachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="KepMessageAttachment">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:base64Binary" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="baseClass">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Info" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cancelled" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CreateDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="KepTemplate">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Content" type="s:base64Binary" />
+              <s:element minOccurs="0" maxOccurs="1" name="Params" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="KepDataSet">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="DataSet" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="KepJob">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="IntervalType" type="tns:IntervalTypes" />
+              <s:element minOccurs="1" maxOccurs="1" name="Interval" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ReceiverId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="KepDataSet" type="tns:KepDataSet" />
+              <s:element minOccurs="1" maxOccurs="1" name="TemplateId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Template" type="tns:KepTemplate" />
+              <s:element minOccurs="1" maxOccurs="1" name="StartTime" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="LastExecTime" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="Active" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="IntervalTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="None" />
+          <s:enumeration value="Hour" />
+          <s:enumeration value="Day" />
+          <s:enumeration value="Month" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ConstantValue">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="OrderBy" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Value" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="Total" type="s:double" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="meter">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Mark" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Driver" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ContractPower" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="SettedPower" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="Multiplier" type="s:double" />
+              <s:element minOccurs="1" maxOccurs="1" name="SubscriberId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="DepartmentId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="DepartmentCode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SubscriberCode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="MeterYear" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ProfilePeriod" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="UsingPlace" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="UsingPlaceString" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="subscriberAttachState" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Mechanics" type="tns:ArrayOfMeterMechanic" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfMeterMechanic">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="meterMechanic" nillable="true" type="tns:meterMechanic" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="meterMechanic">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LineNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Serial" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Class" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mark" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Model" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SealNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProdYear" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CalibrationDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="QMin" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="QMax" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PressValue" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Radius" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="group">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="tariffBase">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Code1" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Code2" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Code3" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="department">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="departmentType" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Relevant" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Adres" type="tns:address" />
+              <s:element minOccurs="0" maxOccurs="1" name="Contact" type="tns:contacts" />
+              <s:element minOccurs="0" maxOccurs="1" name="taxInfo" type="tns:taxInfo" />
+              <s:element minOccurs="0" maxOccurs="1" name="PrefixEInvoice" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PrefixEArchive" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Properties" type="tns:ArrayOfPropertyValue" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="address">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="addressType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Line1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Line2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Line3" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TownId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Town" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CityId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="contacts">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Phone1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fax" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gsm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gsm2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gsm3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountEMail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Web" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="taxInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TaxType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TaxOffice" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPropertyValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="propertyValue" nillable="true" type="tns:propertyValue" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="propertyValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="subscriber">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Department" type="tns:department" />
+              <s:element minOccurs="0" maxOccurs="1" name="SubscriberType" type="tns:baseClass" />
+              <s:element minOccurs="0" maxOccurs="1" name="Tariff" type="tns:tariffBase" />
+              <s:element minOccurs="0" maxOccurs="1" name="Group" type="tns:group" />
+              <s:element minOccurs="0" maxOccurs="1" name="TaxInfo" type="tns:taxInfo" />
+              <s:element minOccurs="0" maxOccurs="1" name="Address" type="tns:address" />
+              <s:element minOccurs="0" maxOccurs="1" name="Contacts" type="tns:contacts" />
+              <s:element minOccurs="0" maxOccurs="1" name="MainMeter" type="tns:meter" />
+              <s:element minOccurs="0" maxOccurs="1" name="UniqueNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PmumId" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Order" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="SubMeters" type="tns:ArrayOfMeter" />
+              <s:element minOccurs="0" maxOccurs="1" name="Relevant" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="SanSicBelGecTarihi" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="IndustryRegnum" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Constants" type="tns:ArrayOfConstantValue" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfMeter">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="meter" nillable="true" type="tns:meter" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfConstantValue">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ConstantValue" nillable="true" type="tns:ConstantValue" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="KepMessage">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:baseClass">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="KepMail" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="RefTable" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="RefId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Subscriber" type="tns:subscriber" />
+              <s:element minOccurs="1" maxOccurs="1" name="JobId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="KepJob" type="tns:KepJob" />
+              <s:element minOccurs="0" maxOccurs="1" name="TemplateContent" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SignedContent" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:JobStatus" />
+              <s:element minOccurs="0" maxOccurs="1" name="StatusCode" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="SentTime" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="HasAttachment" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="MessageID" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="JobStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Draft" />
+          <s:enumeration value="Signed" />
+          <s:enumeration value="Sent" />
+          <s:enumeration value="Error" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfKepMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="KepMessage" nillable="true" type="tns:KepMessage" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetKepMessageListByStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SessionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="status" type="tns:JobStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetKepMessageListByStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetKepMessageListByStatusResult" type="tns:KepMessageListResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateKepMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SessionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="messages" type="tns:ArrayOfKepMessage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateKepMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateKepMessagesResult" type="tns:BaseResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateKepMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SessionId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="message" type="tns:KepMessage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateKepMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateKepMessageResult" type="tns:BaseResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetKepMessageAttahments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SessionId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="KepMessageId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetKepMessageAttahmentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetKepMessageAttahmentsResult" type="tns:KepMessageAttachmentsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetKepMessageListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetKepMessageList" />
+  </wsdl:message>
+  <wsdl:message name="GetKepMessageListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetKepMessageListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetKepMessageListByStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetKepMessageListByStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetKepMessageListByStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetKepMessageListByStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateKepMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateKepMessages" />
+  </wsdl:message>
+  <wsdl:message name="UpdateKepMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateKepMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateKepMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateKepMessage" />
+  </wsdl:message>
+  <wsdl:message name="UpdateKepMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateKepMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetKepMessageAttahmentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetKepMessageAttahments" />
+  </wsdl:message>
+  <wsdl:message name="GetKepMessageAttahmentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetKepMessageAttahmentsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="KepServicesSoap">
+    <wsdl:operation name="GetKepMessageList">
+      <wsdl:input message="tns:GetKepMessageListSoapIn" />
+      <wsdl:output message="tns:GetKepMessageListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageListByStatus">
+      <wsdl:input message="tns:GetKepMessageListByStatusSoapIn" />
+      <wsdl:output message="tns:GetKepMessageListByStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessages">
+      <wsdl:input message="tns:UpdateKepMessagesSoapIn" />
+      <wsdl:output message="tns:UpdateKepMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessage">
+      <wsdl:input message="tns:UpdateKepMessageSoapIn" />
+      <wsdl:output message="tns:UpdateKepMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageAttahments">
+      <wsdl:input message="tns:GetKepMessageAttahmentsSoapIn" />
+      <wsdl:output message="tns:GetKepMessageAttahmentsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="KepServicesSoap" type="tns:KepServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetKepMessageList">
+      <soap:operation soapAction="http://tempuri.org/GetKepMessageList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageListByStatus">
+      <soap:operation soapAction="http://tempuri.org/GetKepMessageListByStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessages">
+      <soap:operation soapAction="http://tempuri.org/UpdateKepMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessage">
+      <soap:operation soapAction="http://tempuri.org/UpdateKepMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageAttahments">
+      <soap:operation soapAction="http://tempuri.org/GetKepMessageAttahments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="KepServicesSoap12" type="tns:KepServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetKepMessageList">
+      <soap12:operation soapAction="http://tempuri.org/GetKepMessageList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageListByStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetKepMessageListByStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessages">
+      <soap12:operation soapAction="http://tempuri.org/UpdateKepMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKepMessage">
+      <soap12:operation soapAction="http://tempuri.org/UpdateKepMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetKepMessageAttahments">
+      <soap12:operation soapAction="http://tempuri.org/GetKepMessageAttahments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="KepServices">
+    <wsdl:port name="KepServicesSoap" binding="tns:KepServicesSoap">
+      <soap:address location="http://192.168.2.240:90/services/KepServices.asmx" />
+    </wsdl:port>
+    <wsdl:port name="KepServicesSoap12" binding="tns:KepServicesSoap12">
+      <soap12:address location="http://192.168.2.240:90/services/KepServices.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

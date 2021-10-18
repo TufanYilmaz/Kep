@@ -1,0 +1,42 @@
+﻿@model List<KepNotificationDev.Models.Receiver>
+@{
+    ViewBag.Title = "Alıcılar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function OnCloseRecieverSelected(s, e) {
+        var res = cmbDepartment.GetClientVisible();
+        gvEditing.PerformCallback({ isVisible: res });
+        cmbDepartment.SetValue("");
+    }
+</script>
+
+<h3>@ViewBag.Title</h3>
+
+
+@Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "formKepRecievers";
+    s.Width = Unit.Percentage(100);
+    s.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+
+    s.Items.Add(i =>
+    {
+        i.Caption = "Alıcı Seti";
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("DataSourcePartial");
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "Birim";
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("DepartmentPartial");
+        });
+    });
+
+}).GetHtml()
+
+@Html.Partial("RecieversGridPartial", Model)

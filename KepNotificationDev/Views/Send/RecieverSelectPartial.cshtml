@@ -1,0 +1,73 @@
+﻿@model List<KepNotificationDev.Models.Receiver>
+@Html.DevExpress().GridLookup(settings =>
+{
+    settings.Name = "MyMailMessage_Recievers";
+    settings.GridViewProperties.CallbackRouteValues = new { Controller = "Send", Action = "RecieverSelectPartial" };
+    settings.GridViewClientSideEvents.BeginCallback = "function(s, e) { e.customArgs['Reciever'] = cmbDataset.GetValue(); e.customArgs['Departmen']=cmbDepartment.GetValue(); }";
+    settings.GridViewProperties.BeforeGetCallbackResult = (sen, eve) =>
+    {
+        if (ViewData["IsVisible"] != null)
+        {
+            bool isVisible = Convert.ToBoolean(ViewData["IsVisible"]);
+            MVCxGridView g = (MVCxGridView)sen;
+            g.Columns["AccountGsm"].Visible = isVisible;
+            g.Columns["TechnicGsm"].Visible = isVisible;
+            g.Columns["AccountEmail"].Visible = isVisible;
+        }
+    };
+    settings.KeyFieldName = "Id";
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowSelectCheckbox = true;
+    settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+    //string[] columnNames = { "Code", "Info", "ManagementGsm", "AccountGsm", "TechnicGsm", "Email", "AccountEmail", "KepMail" };
+    //string[] columnDisplayNames = { "Kod", "Açıklama", "Yönetim GSM", "Muhasebe GSM", "Teknik GSM", "E-Posta", "Muhasebe E-Posta", "Kep Mail" };
+    //for (int i = 0; i < columnNames.Length; i++)
+    //{
+    //    var col = settings.Columns.Add(columnNames[i]);
+    //    col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    //    col.Caption = columnDisplayNames[i];
+    //}
+
+
+    settings.Columns.Add("Code").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("Info").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("ManagementGsm").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("AccountGsm").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("TechnicGsm").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("Email").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("AccountEmail").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    settings.Columns.Add("KepMail").Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+
+    settings.Width = Unit.Percentage(100);
+    settings.Properties.SelectionMode = DevExpress.Web.GridLookupSelectionMode.Multiple;
+    settings.Properties.TextFormatString = "{1}";
+    settings.Properties.MultiTextSeparator = ", ";
+    settings.Properties.Width = Unit.Percentage(100);
+
+    settings.GridViewProperties.Settings.ShowFilterRow = true;
+    settings.GridViewProperties.Settings.ShowStatusBar = GridViewStatusBarMode.Visible;
+    settings.GridViewProperties.SettingsPager.EnableAdaptivity = true;
+    settings.GridViewProperties.SettingsPager.PageSize = 15;
+    settings.GridViewProperties.SetStatusBarTemplateContent(c =>
+    {
+        ViewContext.Writer.Write("<div style=\"padding: 2px 8px 2px 0; float: right\">");
+        Html.DevExpress().Button(btnSettings =>
+        {
+            btnSettings.Name = "btnClose";
+            btnSettings.UseSubmitBehavior = false;
+            btnSettings.Text = "KAPAT";
+            btnSettings.ClientSideEvents.Click = "CloseGridLookup";
+        }).Render();
+        ViewContext.Writer.Write("</div>");
+    });
+
+    settings.DataBound = (sender, e) =>
+    {
+        var gridLookup = (MVCxGridLookup)sender;
+        gridLookup.GridView.Width = 850;
+    };
+    settings.Properties.ClientSideEvents.TextChanged = "SubscibersSelected";
+
+
+}).BindList(Model).GetHtml()

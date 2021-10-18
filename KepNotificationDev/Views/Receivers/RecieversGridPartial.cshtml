@@ -1,0 +1,82 @@
+﻿@model List<KepNotificationDev.Models.Receiver>
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "gvEditing";
+        settings.KeyFieldName = "Id";
+        settings.CallbackRouteValues = new { Controller = "Receivers", Action = "RecieversGridPartial" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Receivers", Action = "RecieversGridUpdatePartial" };
+        settings.ClientSideEvents.BeginCallback = "function(s, e) { e.customArgs['Reciever'] = cmbDataset.GetValue(); e.customArgs['Departmen']=cmbDepartment.GetValue(); }";
+        settings.BeforeGetCallbackResult = (sender, e) =>
+        {
+            if (ViewData["IsVisible"] != null)
+            {
+                bool isVisible = Convert.ToBoolean( ViewData["IsVisible"]);
+                MVCxGridView g = (MVCxGridView)sender;
+                g.Columns["AccountGsm"].Visible = isVisible;
+                g.Columns["TechnicGsm"].Visible = isVisible;
+                g.Columns["AccountEmail"].Visible = isVisible;
+            }
+        };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+        settings.SettingsPopup.EditForm.Width = 600;
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPager.PageSize = 20;
+
+//settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+//settings.SettingsPopup.EditForm.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+//settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+//settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+//settings.EditFormLayoutProperties.SettingsItems.VerticalAlign = FormLayoutVerticalAlign.Middle;
+
+settings.SettingsCommandButton.EditButton.Text = "Düzenle";
+        settings.SettingsCommandButton.UpdateButton.Text = "Güncelle";
+        settings.SettingsCommandButton.CancelButton.Text = "İptal";
+
+
+        settings.Settings.ShowFilterRow = true;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowEditButton = true;
+        var x = settings.CommandColumn.CustomButtons;
+
+        var colId = settings.Columns.Add("Id");
+        colId.Visible = false;
+        colId.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        var colCode = settings.Columns.Add("Code");
+        colCode.ReadOnly = true;
+        colCode.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        var colInfo = settings.Columns.Add("Info");
+        colInfo.ReadOnly = true;
+        colInfo.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+//settings.Columns.Add("SubsciberType").ReadOnly = true;
+
+settings.Columns.Add("ManagementGsm");
+        settings.Columns.Add("AccountGsm");
+        settings.Columns.Add("TechnicGsm");
+        settings.Columns.Add("Email");
+        settings.Columns.Add("AccountEmail");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "KepMail";
+            c.Caption = "Kep Mail";
+        });
+
+//settings.ClientSideEvents.BeginCallback = "onBeginCallback";
+
+});
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+
+@grid.Bind(Model).GetHtml()
+
+@functions {
+    //GridViewEditingMode EditMode { get { return ViewBag.EditMode; } }
+}

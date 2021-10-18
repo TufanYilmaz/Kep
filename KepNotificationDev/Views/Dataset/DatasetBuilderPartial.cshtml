@@ -1,0 +1,20 @@
+﻿@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "gridSubscriber";
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.CallbackRouteValues = new { Controller = "DataBinding", Action = "QueryBuilderControlPartial" };
+    settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+    settings.SettingsBehavior.AllowEllipsisInText = true;
+    settings.SettingsBehavior.AllowSort = true;
+    settings.DataBound = (sender, e) =>
+    {
+        var gridLookup = (MVCxGridView)sender;
+        var demoAreaWidth = 894;
+        var columnWidth = Math.Max(115, demoAreaWidth / gridLookup.Columns.Count);
+        for (var i = 1; i < gridLookup.Columns.Count; i++)
+        {
+            gridLookup.Columns[i].MinWidth = columnWidth;
+        }
+        gridLookup.Columns[0].MinWidth = demoAreaWidth - (gridLookup.Columns.Count - 1) * columnWidth;
+    };
+}).Bind(Model).GetHtml()

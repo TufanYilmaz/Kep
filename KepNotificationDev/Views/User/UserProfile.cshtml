@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Kullanıcı Profili";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+@Html.DevExpress().Label(ls =>
+{
+    ls.Name = "SessionId";
+    ls.Text = Session["SessionId"].ToString();
+}).GetHtml()

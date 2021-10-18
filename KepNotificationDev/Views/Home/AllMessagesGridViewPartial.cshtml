@@ -1,0 +1,109 @@
+﻿
+@model List<KepNotificationDev.Models.MessageLog>
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "gvKepLogs";
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "AllMessagesGridViewPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(790);
+    settings.KeyFieldName = "Id";
+    var rt = settings.Columns.Add("RefType");
+    rt.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.DatasetType>.GetNames();
+        cb.DropDownStyle = DropDownStyle.DropDown;
+        cb.ValueType = typeof(string);
+    });
+    var ks = settings.Columns.Add("KepStatus");
+    settings.Columns.Add("KepStatusDatetime");
+
+    settings.Columns.Add("RefCode");
+    settings.Columns.Add("RefInfo");
+    var clmnMessageChannel = settings.Columns.Add("MessageChannelCode");
+    clmnMessageChannel.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Models.MessageChannels>.GetDisplayValues();
+        cb.ValueType = typeof(string);
+        cb.DropDownStyle = DropDownStyle.DropDown;
+    });
+    settings.Columns.Add("Receiver");
+    settings.Columns.Add("Subject");
+    var sc = settings.Columns.Add("StatusCode");
+    sc.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.JobStatus>.GetDisplayValues();
+        cb.ValueType = typeof(string);
+        cb.DropDownStyle = DropDownStyle.DropDown;
+    });
+
+    settings.Columns.Add("CreatedDate");
+    settings.Columns.Add("SentDatetime");
+    settings.Columns.Add("TemplateId").SetColVisible(false);
+    settings.Columns.Add("RefId").SetColVisible(false);
+
+
+    settings.SettingsPager.Visible = true;
+    settings.SettingsPager.PageSize = 15;
+
+    settings.SettingsBehavior.AllowAutoFilter = true;
+    settings.SettingsBehavior.AllowHeaderFilter = true;
+    settings.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowFilterRowMenu = true;
+
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.SettingsBehavior.AllowSort = true;
+
+    settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+    settings.ClientSideEvents.SelectionChanged = "onSelectedChange";
+
+    settings.Styles.FocusedRow.BackColor = System.Drawing.Color.RosyBrown;
+    settings.HtmlDataCellPrepared = (sender, e) =>
+    {
+        if (e.DataColumn.FieldName == "KepStatus")
+        {
+            switch ((KepNotificationDev.Helpers.Service.DelilTipi)e.GetValue("KepStatus"))
+            {
+                case KepNotificationDev.Helpers.Service.DelilTipi.SubmissionAcceptance:
+                    e.Cell.BackColor = System.Drawing.Color.DarkOrange;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.SubmissionRejection:
+                    e.Cell.BackColor = System.Drawing.Color.Red;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.REMMDAcceptance:
+                    e.Cell.BackColor = System.Drawing.Color.DarkOrange;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.REMMDRejection:
+                    e.Cell.BackColor = System.Drawing.Color.Red;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.RelayToREMMDFailure:
+                    e.Cell.BackColor = System.Drawing.Color.Red;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.DeliveryToRecipient:
+                    e.Cell.BackColor = System.Drawing.Color.Orange;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.NonDeliveryToRecipient:
+                    e.Cell.BackColor = System.Drawing.Color.Red;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.RetrievalByRecipient:
+                    e.Cell.BackColor = System.Drawing.Color.Green;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.NonRetrievalByRecipient:
+                    e.Cell.BackColor = System.Drawing.Color.Red;
+                    break;
+                case KepNotificationDev.Helpers.Service.DelilTipi.Unknown:
+                    e.Cell.BackColor = System.Drawing.Color.Black;
+                    break;
+                default:
+                    //e.Cell.BackColor = System.Drawing.Color.White;
+                    break;
+            }
+            //KepNotificationDev.Helpers.Service
+        }
+    };
+
+}).Bind(Model).GetHtml()

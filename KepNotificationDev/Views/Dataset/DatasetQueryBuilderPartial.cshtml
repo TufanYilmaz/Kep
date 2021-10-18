@@ -1,0 +1,7 @@
+﻿@Html.DevExpress().QueryBuilder(settings =>
+{
+    settings.Name = "DatasetQueryBuilder";
+    settings.RouteValues = new { Controller = "Dataset", Action = "Invoke" };
+    settings.SaveCallbackRouteValues = new { Controller = "Dataset", Action = "SaveQuery" };
+    settings.ClientSideEvents.SaveCommandExecuted = "onSaveQueryCommandExecuted";
+}).Bind("AbysisDbConn").GetHtml()

@@ -1,0 +1,149 @@
+﻿@model List<KepNotificationDev.Models.MessageLog>
+@{
+    ViewBag.Title = "Anasayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .mybutton {
+        float: right;
+    }
+</style>
+<script>
+    function OnGridFocusedRowChanged(s, e) {
+        s.GetRowValues(s.GetFocusedRowIndex(), 'Id;TemplateId;RefId', PerformPreviewCallBack);
+    }
+    var selectedLogs = new Array();
+    function PerformPreviewCallBack(values) {
+        $.ajax({
+            url: '/Home/KepLogPreviewPartial',
+            data: { "logId": values[0], "templateId": values[1], "subId": values[2] },
+            type: 'GET',
+            success: function (data) {
+                $('#dviPreview').html(data);
+            }
+        });
+    }
+    function onSelectedChange(s, e) {
+        btnSigner.SetEnabled(false);
+        s.GetSelectedFieldValues("Id", CreateSendList);
+    }
+    function CreateSendList(values) {
+        selectedLogs.length = 0;
+        for (var i = 0; i < values.length; i++) {
+            selectedLogs.push(values[i]);
+        }
+        btnSigner.SetEnabled(true);
+
+    }
+    function OpenSigner() {
+        if (selectedLogs.length == 0) {
+            alert("Seçili Kayıt Bulunamadı");
+        } else {
+            btnSigner.SetEnabled(false);
+            setTimeout(function () {
+                btnSigner.SetEnabled(true);
+            }, 3000);
+            var url = 'KepSigner://@KepNotificationDev.Helpers.Session.SessionId';
+            for (var i = 0; i < selectedLogs.length; i++) {
+                url += '~' + selectedLogs[i];
+            }
+            window.open(url, '_blank');
+        }
+    }
+    function CancelLog() {
+        if (selectedLogs.length == 0) {
+            alert("Seçili Kayıt Bulunamadı");
+        } else {
+            var res = confirm("Seçili " + selectedLogs.length + " kayıt iptal hale getirilecektir.\n Bu işleme devam etmek istediğinize emin misiniz?");
+            if (res == false) {
+            } else {
+                $.ajax({
+                    url: '/Home/CancelLogs',
+                    data: JSON.stringify({ "Ids": selectedLogs }),
+                    contentType: 'application/json',
+                    type: 'POST',
+                    success: function (data) {
+                        alert(data);
+                        gvKepLogs.PerformCallback();
+                    }
+                });
+            }
+        }
+    }
+   
+</script>
+<h3>@ViewBag.Title</h3>
+@Html.DevExpress().Splitter(
+    settings =>
+    {
+        settings.Name = "splPreview";
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(1100);
+        settings.ShowCollapseForwardButton = true;
+        settings.ShowCollapseBackwardButton = true;
+        settings.Styles.Pane.Paddings.Padding = 0;
+        settings.Panes.Add(gridviewPane =>
+        {
+            gridviewPane.Name = "gridViewPane";
+            gridviewPane.Size = Unit.Percentage(65);
+            gridviewPane.SetContent(() =>
+            {
+
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnNew";
+                    b.Text = "Yeni";
+                    b.EnableClientSideAPI = true;
+                    b.ClientSideEvents.Click = "function(){ window.location = '/Send/Index'; } ";
+                    b.Images.Image.IconID = "mail_newmail_16x16";
+                    b.ImagePosition = ImagePosition.Right;
+                    b.RenderMode = ButtonRenderMode.Button;
+                }).GetHtml();
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnSigner";
+                    b.Text = "Seçilenleri İmzala";
+                    b.EnableClientSideAPI = true;
+                    b.ClientSideEvents.Click = "OpenSigner";
+                    b.Images.Image.IconID = "richedit_pencolor_svg_16x16";
+                    b.ImagePosition = ImagePosition.Right;
+                    b.RenderMode = ButtonRenderMode.Button;
+                }).GetHtml();
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnUpdate";
+                    b.Text = "Listeyi Güncelle";
+                    b.EnableClientSideAPI = true;
+                    b.ClientSideEvents.Click = "function(){ gvKepLogs.PerformCallback(); } ";
+                    b.Images.Image.IconID = "actions_refresh_16x16";
+                    b.ImagePosition = ImagePosition.Right;
+                    b.RenderMode = ButtonRenderMode.Button;
+                }).GetHtml();
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnCancel";
+                    b.Text = "Seçilenleri İptal Et";
+                    b.EnableClientSideAPI = true;
+                    b.ClientSideEvents.Click = "CancelLog";
+                    b.Images.Image.IconID = "actions_cancel_16x16";
+                    b.ImagePosition = ImagePosition.Right;
+                    b.RenderMode = ButtonRenderMode.Danger;
+                    b.ControlStyle.CssClass = "mybutton";
+                }).GetHtml();
+                @Html.RenderPartial("KepLogsGridView", Model);
+            });
+        });
+
+        settings.Panes.Add(reportViewPane =>
+        {
+            reportViewPane.Name = "reportViewPane";
+            reportViewPane.MinSize = 350;
+            reportViewPane.SetContent(() =>
+            {
+                ViewContext.Writer.Write("<div id=\"dviPreview\"></div>");
+            });
+        });
+    }).GetHtml()
+
+
+

@@ -1,0 +1,73 @@
+﻿@model List<KepNotificationDev.Models.MessageLog>
+@{
+    ViewBag.Title = "Tüm İletiler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function OnGridFocusedRowChanged(s, e) {
+        s.GetRowValues(s.GetFocusedRowIndex(), 'Id;TemplateId;RefId', PerformPreviewCallBack);
+    }
+    var selectedLogs = new Array();
+    function PerformPreviewCallBack(values) {
+        $.ajax({
+            url: '/Home/KepLogPreviewPartial',
+            data: { "logId": values[0], "templateId": values[1], "subId": values[2] },
+            type: 'GET',
+            success: function (data) {
+                $('#dviPreview').html(data);
+            }
+        });
+    }
+    function onSelectedChange(s, e) {
+        s.GetSelectedFieldValues("Id", CreateSendList);
+    }
+    function CreateSendList(values) {
+        selectedLogs.length = 0;
+        for (var i = 0; i < values.length; i++) {
+            selectedLogs.push(values[i]);
+        }
+    }
+    function OpenSigner() {
+        if (selectedLogs.length == 0) {
+            alert("Seçili Kayıt Bulunamadı");
+        } else {
+            var url = 'KepSigner://@KepNotificationDev.Helpers.Session.SessionId';
+            for (var i = 0; i < selectedLogs.length; i++) {
+                url += '~' + selectedLogs[i];
+            }
+            window.open(url, '_blank');
+        }
+    }
+</script>
+<h3>@ViewBag.Title</h3>
+
+@Html.DevExpress().Splitter(
+    settings =>
+    {
+        settings.Name = "splPreview";
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(1100);
+        settings.ShowCollapseForwardButton = true;
+        settings.ShowCollapseBackwardButton = true;
+        settings.Styles.Pane.Paddings.Padding = 0;
+        settings.Panes.Add(gridviewPane =>
+        {
+            gridviewPane.Name = "gridViewPane";
+            gridviewPane.Size = Unit.Percentage(65);
+            gridviewPane.SetContent(() =>
+            {
+                @Html.RenderPartial("AllMessagesGridViewPartial", Model);
+            });
+        });
+
+        settings.Panes.Add(reportViewPane =>
+        {
+            reportViewPane.Name = "reportViewPane";
+            reportViewPane.MinSize = 350;
+            reportViewPane.SetContent(() =>
+            {
+                ViewContext.Writer.Write("<div id=\"dviPreview\"></div>");
+            });
+        });
+    }).GetHtml()

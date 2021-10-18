@@ -1,0 +1,42 @@
+﻿@model List<KepNotificationDev.Models.Job>
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "gvJobGrid";
+    settings.KeyFieldName = "Id";
+    settings.CallbackRouteValues = new { Controller = "Job", Action = "Index" };
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "#";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write(
+                Html.ActionLink("Düzenle", "EditJob", new { Id = DataBinder.Eval(tc.DataItem, "Id") }) + "&nbsp;" +
+                Html.ActionLink("Sil", "DeleteJob", new { Id = DataBinder.Eval(tc.DataItem, "Id") },
+                    new { onclick = "return confirm('Bu kaydı silmek istediğinize emin misiniz?')" })
+            );
+        });
+        c.SetHeaderTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write(
+                Html.ActionLink("Yeni", "EditJob", new { Id = -1 }).ToHtmlString()
+            );
+        });
+        c.Settings.AllowDragDrop = DefaultBoolean.False;
+        c.Settings.AllowSort = DefaultBoolean.False;
+        c.Width = 70;
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.Name = "Code";
+        c.FieldName = "Code";
+        c.Width = 70;
+    });
+    settings.Columns.Add("Info");
+
+
+
+    //DevExpress.Web.Demos.GridViewFeaturesHelper.SetupGlobalGridViewBehavior(settings);
+}).Bind(Model).GetHtml()

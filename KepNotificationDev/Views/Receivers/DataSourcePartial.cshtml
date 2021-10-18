@@ -1,0 +1,21 @@
+﻿
+@Html.DevExpress().ComboBox(settings =>
+{
+    settings.Name = "cmbDataset";
+    settings.CallbackRouteValues = new { Controller = "Receivers", Action = "DataSourcePartial" };
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.ClientSideEvents.SelectedIndexChanged = @"
+function(s,e){
+ var value = s.GetValue();
+ if(value.includes('Firma'))
+{
+ cmbDepartment.SetVisible(false);
+}
+ if(value.includes('Abone'))
+{
+ cmbDepartment.SetVisible(true);
+}
+}
+";
+    settings.Properties.ClientSideEvents.CloseUp = "OnCloseRecieverSelected";
+}).BindList(KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.DatasetType>.GetDisplayValues()).GetHtml()

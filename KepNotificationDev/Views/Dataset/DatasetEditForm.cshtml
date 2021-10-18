@@ -1,0 +1,187 @@
+﻿@model KepNotificationDev.Models.Datasets
+<style>
+    .edit_form .editFormButton {
+        width: calc(50% - 2px);
+    }
+</style>
+@{
+    ViewBag.Title = "DatasetEditForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //if (string.IsNullOrEmpty(Model.ReferanceTable))
+    //{
+    //    Model.ReferanceTable = "";
+    //}
+
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<script>
+    function onSaveQueryCommandExecuted(s, e) {
+        //console.log("1" + e);
+        //console.log("2" + e.Result);
+        var result = JSON.parse(e.Result);
+        if (result.queryValidationError) {
+            alert(result.queryValidationError);
+        } else {
+            //console.log("1" + result.resultQuery);
+            Dataset.SetText(result.resultQuery);
+            QueryBuilderModal.Hide();
+        }
+    }
+
+    function ReferanceRadioChanged(s, e) {
+        console.log(s.GetValue());
+        var value = s.GetValue();
+        if (value == "@KepNotificationDev.Helpers.Service.DatasetType.Abone.ToString()") {
+            ReferanceTable.SetText("tb_SUBSCRIPTION");
+        }
+        else if (value == "@KepNotificationDev.Helpers.Service.DatasetType.Firma.ToString()") {
+            ReferanceTable.SetText("tb_ACCOUNTS");
+        } else if (value == "@KepNotificationDev.Helpers.Service.DatasetType.Diğer.ToString()") {
+            ReferanceTable.SetText("@Model.ReferanceTable");
+        }
+
+    }
+</script>
+<h3>Alıcı oluştur veya düzenle</h3>
+
+@using (Html.BeginForm("AddDataset", "Dataset", FormMethod.Post, new { @class = "edit_form" }))
+{
+    @Html.Hidden("Id")
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "datasetEditFormLayout";
+    s.Width = System.Web.UI.WebControls.Unit.Percentage(60);
+    s.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    s.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    s.UseDefaultPaddings = false;
+
+
+    s.Items.Add(m => m.Code, i =>
+    {
+        i.NestedExtension().TextBox(t =>
+        {
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            t.ShowModelErrors = true;
+        });
+    });
+    s.Items.Add(m => m.Info, i =>
+    {
+        i.NestedExtension().TextBox(t =>
+        {
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            t.ShowModelErrors = true;
+        });
+    });
+
+    s.Items.Add(m => m.DatasetType, i =>
+    {
+
+        i.Caption = "Veri Türü";
+        i.NestedExtension().RadioButtonList(t =>
+        {
+            t.Properties.RepeatDirection = RepeatDirection.Horizontal;
+            t.Properties.ValueType = typeof(KepNotificationDev.Helpers.Service.DatasetType);
+            t.Properties.DataSource = Enum.GetNames(typeof(KepNotificationDev.Helpers.Service.DatasetType));
+            t.Properties.ClientSideEvents.SelectedIndexChanged = "ReferanceRadioChanged";
+        });
+    });
+    s.Items.Add(m => m.ReferanceTable, i =>
+    {
+        i.NestedExtension().TextBox(t =>
+        {
+            t.ReadOnly = true;
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            //t.Text = string.IsNullOrEmpty(Model.ReferanceTable) ? "tb_ACCOUNTS" : Model.ReferanceTable;
+            t.ShowModelErrors = true;
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "";
+        i.Paddings.PaddingTop = 24;
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "btnQueryBuilder";
+                b.Text = "Dataset Cümlesi Oluştur";
+                b.Style.Add("margin-left", "4px");
+                b.ControlStyle.CssClass = "editFormButton";
+                b.ClientSideEvents.Click = "function(s, e) { QueryBuilderModal.Show(); }"; //"function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Datasets", Action = "Index" }) + "'; }";
+            }).Render();
+
+        });
+    });
+    s.Items.Add(m => m.Dataset, i =>
+    {
+        i.Caption = "Dataset için SQL Cümlesi";
+        //i.Paddings.PaddingTop = 12;
+        i.Paddings.PaddingBottom = 12;
+        i.NestedExtension().Memo(memo =>
+        {
+            memo.Width = Unit.Percentage(100);
+            memo.Properties.Rows = 8;
+            memo.Style.Add("margin-left", "4px");
+        });
+
+    });
+    //Html.DevExpress().QueryBuilder(settings =>
+    //{
+    //    settings.Name = "DatasetQueryBuilder";
+    //    settings.RouteValues = new { Controller = "Dataset", Action = "Invoke" };
+    //    settings.SaveCallbackRouteValues = new { Controller = "Dataset", Action = "SaveQuery" };
+    //    //settings.ClientSideEvents.SaveCommandExecuted = "onSaveQueryCommandExecuted";
+    //}).Bind("AbysisDbConn").GetHtml();
+    s.Items.Add(i =>
+    {
+        i.Caption = "";
+        i.Paddings.PaddingTop = 24;
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "UpdateBtn";
+                b.Text = Model.Id > 0 ? "Güncelle" : "Oluştur";
+                b.ControlStyle.CssClass = "editFormButton";
+                b.UseSubmitBehavior = true;
+            }).Render();
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "CancelBtn";
+                b.Text = Model.Id > 0 ? "Geri" : "İptal";
+                b.Style.Add("margin-left", "4px");
+                b.ControlStyle.CssClass = "editFormButton";
+                b.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Dataset", Action = "Index" }) + "'; }";
+            }).Render();
+        });
+    });
+}).GetHtml()
+}
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "QueryBuilderModal";
+        settings.Width = 1200;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Sorgu Oluşturucu";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.SetContent(() =>
+        {
+
+            Html.RenderAction("GetQueryBuilder");
+            //Html.RenderAction("SeparateAction");
+        });
+    }).GetHtml()
+
+<script>
+    ReferanceTable.SetText("@(string.IsNullOrEmpty(Model.ReferanceTable) ? "tb_ACCOUNTS" : Model.ReferanceTable)");
+</script>

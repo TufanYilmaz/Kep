@@ -1,0 +1,67 @@
+﻿@model KepNotificationDev.Models.ViewModels.TemplateViewModel
+@using DevExpress.DataAccess.ConnectionParameters
+@using DevExpress.DataAccess.Sql
+@using DevExpress.DataAccess.Json
+
+@{
+
+    var designer = Html.DevExpress().ReportDesigner(settings =>
+    {
+        settings.Name = "TemplateDesigner";
+        //foreach (var item in Model.Datasets)
+        //{
+        DevExpress.DataAccess.Sql.SqlDataSource ds = new DevExpress.DataAccess.Sql.SqlDataSource("AbysisDbConn");
+        settings.SettingsClientSideModel.IncludeLocalization = true;
+        //settings.ClientSideEvents.CustomizeLocalization = "function(s,e) { " +
+        //"var messages=$.get(\"/Content/dx-reporting.tr.json\").done(function(data){" +
+        //"console.log(data);" +
+        //"e.LoadMessages(data);});}";
+        //"console.log(messages);" +
+        //"e.LoadMessages(messages);}";
+        //"s.UpdateLocalization({" +
+        //    "'New' : 'Yeni'," +
+        //    "'New via Wizard...' : 'Sihirbaz ile Yeni...'," +
+        //    "'Cancel': 'İptal'," +
+        //    "'Next': 'Sonraki'," +
+        //    "'Previous': 'Önceki'," +
+        //    "'Open...': 'Aç..'," +
+        //    "'Design in Report Wizard...': 'Rapor Sihirbazı ile Tasarla...'," +
+        //    "'Save...': 'Kaydet...'," +
+        //    "'Save As...': 'Farklı Kaydet...'," +
+        //    "'Exit': 'Çıkış'," +
+        //    "'Finish': 'Bitir'," +
+        //    "'Menu': 'Menü'," +
+        //    "'Properties' : 'Özellikler'});}";
+
+
+        //    CustomSqlQuery query = new CustomSqlQuery();
+        //    query.Name = item.Info;//"Aboneler";
+        //    query.Sql = item.Dataset;//"SELECT * FROM tb_SUBSCRIPTION";
+
+        //    ds.Queries.Add(query);
+        //    foreach (var param in KepNotificationDev.Helpers.DBHelper.FindParameters(item.Dataset))
+        //    {
+        //        query.Parameters.Add(new DevExpress.DataAccess.Sql.QueryParameter(param, typeof(int), 0));
+        //        Model.ReportDesign.Parameters.Add(new DevExpress.XtraReports.Parameters.Parameter()
+        //        {
+        //            Name=param,
+        //            Type=typeof(int),
+        //            Value=0,
+        //            Visible=true,
+        //        });
+        //    }
+        //    ds.RebuildResultSchema();
+        //settings.DataSources.Add(item.Code, ds);
+        settings.DataSources.Add("Veriler", ds);
+        //settings.DataSources.
+
+        //}
+        //settings.ClientSideEvents.SaveCommandExecuted
+
+
+        //    settings.ClientSideEvents.PreviewEditingFieldChanged
+
+    });
+    designer.Bind(Model.ReportDesign).Render();
+
+}

@@ -1,0 +1,8 @@
+﻿@model List<KepNotificationDev.Models.Job>
+@{
+    ViewBag.Title = "Taslak Oluşturma Servisi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>@ViewBag.Title</h3>
+
+@Html.Partial("JobGridPartial", Model)

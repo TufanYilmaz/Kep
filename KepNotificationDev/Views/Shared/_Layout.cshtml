@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Abysis Kep bildirimi sistemi">
+    <meta name="author" content="Merkez Yazılım">
+    <meta name="keyword" content="KEP, OSOS, Meter, Invoice, Sayaç, Okuma, Abone, Subscriber, Managment">
+    <link rel="shortcut icon" href="~/Assets/img/favicon.ico">
+
+    <title>@ViewBag.Title | Abysis Kep Bildirgesi</title>
+    <!-- Bootstrap CSS -->
+    <link href="~/Assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- bootstrap theme -->
+    <link href="~/Assets/css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="~/Assets/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="~/Assets/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles -->
+    <link href="~/Assets/css/style.css" rel="stylesheet">
+    <link href="~/Assets/css/style-responsive.css" rel="stylesheet" />
+    <link href="~/Assets/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Chart },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.QueryBuilder },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+    )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new Script { ExtensionSuite = ExtensionSuite.RichEdit },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new Script { ExtensionSuite = ExtensionSuite.Chart },
+        new Script { ExtensionSuite = ExtensionSuite.Report },
+        new Script { ExtensionSuite = ExtensionSuite.QueryBuilder },
+        new Script { ExtensionSuite = ExtensionSuite.GridView }
+    )
+    @RenderSection("AdditionalResources", false)
+</head>
+<body>
+    <!-- container section start -->
+    <section id="container" class="">
+
+
+        <header class="header dark-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Menü Gizle/Göster" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+            <a href="/Home/Index" class="logo">ABYSIS <span class="lite">Kep</span></a>
+            <!--logo end-->
+
+
+            <div class="top-nav notification-row">
+                <!-- notificatoin dropdown start-->
+                <ul class="nav pull-right top-menu">
+
+                    <li class="eborder-top">
+                        @* @Html.ActionLink("Profil", "UserProfile", "User",null, new { @class = "icon_profile" })*@
+                        <a href="/User/UserManual"><i class="fa fa-file-text-o"></i> Kullanım Kılavuzu</a>
+                    </li>
+                    <li class="eborder-top">
+                        @* @Html.ActionLink("Profil", "UserProfile", "User",null, new { @class = "icon_profile" })*@
+                        <a href="/User/UserProfile"><i class="icon_profile"></i> @Session["Username"]</a>
+                    </li>
+                    @if (User.IsInRole("1"))
+                    {
+                        <li>
+                            <a href="/User/UserSettings"><i class="fa fa-gear"></i> Ayarlar</a>
+                        </li>
+                    }
+
+                    <li>
+
+                        <a href="/Auth/LogOut"><i class="fa fa-power-off"></i> Çıkış</a>
+                    </li>
+                    <!-- user login dropdown start-->
+                    <!--<li class="dropdown">
+    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+        <span class="username">@Session["Username"]</span>
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu extended logout">-->
+                    @*<div class="log-arrow-up"></div>*@
+                    <!--<li class="eborder-top">-->
+                    @* @Html.ActionLink("Profil", "UserProfile", "User",null, new { @class = "icon_profile" })*@
+                    <!--<a href="/User/UserProfile"><i class="icon_profile"></i> Profil</a>
+    </li>
+    <li>
+        <a href="#"><i class="fa fa-gear"></i> Ayarlar</a>
+    </li>
+    <li>-->
+                    @*@Html.ActionLink("Çıkış", "LogOut", "Auth",null, new { @class = "icon_key_alt" })*@
+
+                    <!--<a href="/Auth/LogOut"><i class="icon_key_alt"></i> Çıkış</a>
+            </li>
+
+        </ul>
+    </li>-->
+                    <!-- user login dropdown end -->
+                </ul>
+                <!-- notificatoin dropdown end-->
+            </div>
+        </header>
+        <!--header end-->
+        <!--sidebar start-->
+        <aside>
+            <div id="sidebar" class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">
+                    <li>
+                        @Html.ActionLink(" Taslak İletiler", "Index", "Home", null, new { @class = "fa fa-inbox" })
+                    </li>
+                    <li>
+                        @Html.ActionLink(" El ile Oluştur", "Index", "Send", null, new { @class = "fa fa-pencil-square-o" })
+                    </li>
+                    @if (User.IsInRole("1"))
+                    {
+                    <li>
+                        @Html.ActionLink(" Taslak Oluşturma Servisi", "Index", "Job", null, new { @class = "fa fa-indent" })
+                    </li>
+                    @*<li>
+                            @Html.ActionLink(" Html Şablonlar", "Index", "Template2", null, new { @class = "fa fa-html5" })
+                        </li>*@
+                    <li>
+                        @Html.ActionLink(" Rapor Şablonlar", "Index", "Template", null, new { @class = "fa fa-file-word-o" })
+                    </li>
+                    <li>
+                        @Html.ActionLink(" Alıcı Veri Setleri", "Index", "Dataset", null, new { @class = "fa fa-sitemap" })
+                    </li>
+                    }
+                    <li>
+                        @Html.ActionLink(" Tüm İletiler", "AllMessages", "Home", null, new { @class = "fa fa-cubes" })
+                    </li>
+                     <li>
+                        @Html.ActionLink(" Alıcı Kayıtları", "Index", "Receivers", null, new { @class = "fa fa-users" })
+                    </li>
+
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">
+                <!--overview start-->
+                @RenderBody()
+                <div class="row">
+                    <div class="col-lg-12">
+
+                    </div>
+                </div>
+            </section>
+            <div class="text-right">
+                <div class="credits">
+                    <a href="http://www.merkez.com.tr" target="_blank">
+                        ® Merkez Yazılım
+                        <img src="~/Assets/img/AbysisLogoTransparent.png" width="32" height="24" />
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!--main content end-->
+    </section>
+    <!-- container section start -->
+    <!-- javascripts -->
+    @*<script src="~/Assets/js/jquery.js"></script>*@
+    @*<script src="~/Assets/js/jquery-ui-1.10.4.min.js"></script>*@
+
+
+    @*<script src="~/Assets/js/jquery-1.8.3.min.js"></script>*@
+
+    @*<script type="text/javascript" src="~/Assets/js/jquery-ui-1.9.2.custom.min.js"></script>*@
+    <!-- bootstrap -->
+    <script src="~/Assets/js/bootstrap.min.js"></script>
+    <!-- nice scroll -->
+    <script src="~/Assets/js/jquery.scrollTo.min.js"></script>
+
+    <script src="~/Assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+
+    <script src="~/Assets/js/scripts.js"></script>
+
+</body>
+</html>

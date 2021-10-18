@@ -1,0 +1,44 @@
+@model List<string>
+@using KepNotificationDev.Controllers;
+
+@Html.DevExpress().HtmlEditor(settings =>
+{
+    settings.Name = "Template.Content";
+    settings.CallbackRouteValues = new { Controller = "Template2", Action = "Template2EditorPartial" };
+    settings.Width = Unit.Pixel(800);
+    settings.Height = Unit.Pixel(400);
+    settings.ToolbarMode = HtmlEditorToolbarMode.Menu;
+
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "Template2", Action = "Template2EditorPartialImageUpload" };
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = Template2ControllerTemplate2EditorSettings.ImageUploadDirectory;
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(Template2ControllerTemplate2EditorSettings.ImageUploadValidationSettings);
+
+    settings.Settings.AllowPreview = false;
+
+    foreach (string item in Session["Placeholders"] as List<string>)
+    {
+        settings.Placeholders.Add(new HtmlEditorPlaceholderItem(item));
+
+    }
+    HtmlEditorToolbar toolbar = new HtmlEditorToolbar();
+    toolbar.Items.Add(new ToolbarUndoButton());
+    toolbar.Items.Add(new ToolbarRedoButton());
+    toolbar.Items.Add(new ToolbarBoldButton(true));
+    toolbar.Items.Add(new ToolbarItalicButton());
+    toolbar.Items.Add(new ToolbarUnderlineButton());
+    toolbar.Items.Add(new ToolbarStrikethroughButton());
+    toolbar.Items.Add(new ToolbarJustifyLeftButton(true));
+    toolbar.Items.Add(new ToolbarJustifyCenterButton());
+    toolbar.Items.Add(new ToolbarJustifyRightButton());
+    toolbar.Items.Add(new ToolbarBackColorButton(true));
+    toolbar.Items.Add(new ToolbarFontColorButton());
+
+    ToolbarTableOperationsDropDownButton tableOperationsButton = new ToolbarTableOperationsDropDownButton(true);
+    tableOperationsButton.CreateDefaultItems();
+    toolbar.Items.Add(tableOperationsButton);
+
+    toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
+    settings.Toolbars.Add(toolbar);
+
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageSelector.Assign(Template2ControllerTemplate2EditorSettings.ImageSelectorSettings);
+}).GetHtml()

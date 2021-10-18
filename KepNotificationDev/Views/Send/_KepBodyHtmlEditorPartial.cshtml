@@ -1,0 +1,40 @@
+@using KepNotificationDev.Controllers;
+@model KepNotificationDev.Models.ViewModels.SenderViewModel
+
+@Html.DevExpress().HtmlEditorFor(m=>m.MyMailMessage.Body, settings =>
+{
+    //settings.Name = "KepBodyHtmlEditor";
+    settings.CallbackRouteValues = new { Controller = "Send", Action = "KepBodyHtmlEditorPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.ToolbarMode = HtmlEditorToolbarMode.Menu;
+
+    //settings.
+
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "Send", Action = "KepBodyHtmlEditorPartialImageUpload" };
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = SendControllerKepBodyHtmlEditorSettings.ImageUploadDirectory;
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(SendControllerKepBodyHtmlEditorSettings.ImageUploadValidationSettings);
+
+
+    //settings.SettingsDialogs.InsertImageDialog.SettingsImageSelector.Assign(SendControllerKepBodyHtmlEditorSettings.ImageSelectorSettings);
+
+    HtmlEditorToolbar toolbar = new HtmlEditorToolbar();
+    toolbar.Items.Add(new ToolbarUndoButton());
+    toolbar.Items.Add(new ToolbarRedoButton());
+    toolbar.Items.Add(new ToolbarBoldButton(true));
+    toolbar.Items.Add(new ToolbarItalicButton());
+    toolbar.Items.Add(new ToolbarUnderlineButton());
+    toolbar.Items.Add(new ToolbarStrikethroughButton());
+    toolbar.Items.Add(new ToolbarJustifyLeftButton(true));
+    toolbar.Items.Add(new ToolbarJustifyCenterButton());
+    toolbar.Items.Add(new ToolbarJustifyRightButton());
+    toolbar.Items.Add(new ToolbarBackColorButton(true));
+    toolbar.Items.Add(new ToolbarFontColorButton());
+
+    ToolbarTableOperationsDropDownButton tableOperationsButton = new ToolbarTableOperationsDropDownButton(true);
+    tableOperationsButton.CreateDefaultItems();
+    toolbar.Items.Add(tableOperationsButton);
+
+    //toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
+    settings.Toolbars.Add(toolbar);
+
+}).GetHtml()

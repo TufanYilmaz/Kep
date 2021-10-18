@@ -1,0 +1,82 @@
+﻿@model List<KepNotificationDev.Models.Datasets>
+@{
+    ViewBag.Title = "TemplateEditForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<script>
+    function onSaveQueryCommandExecuted(s, e) {
+        //console.log("1" + e);
+        //console.log("2" + e.Result);
+        var result = JSON.parse(e.Result);
+        if (result.queryValidationError) {
+            alert(result.queryValidationError);
+        } else {
+            //console.log("1" + result.resultQuery);
+            Dataset.SetText(result.resultQuery);
+            QueryBuilderModal.Hide();
+        }
+    }
+</script>
+@using (Html.BeginForm("NewTemplate", "Template2", FormMethod.Post, new { @class = "edit_form" }))
+{
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "template2SelectDataset";
+    s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    s.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    s.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    s.UseDefaultPaddings = false;
+
+    s.Items.Add(i =>
+    {
+        i.Caption = "Dataset Seçiniz";
+        i.Name = "Id";
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().ComboBox(settings =>
+            {
+                settings.Name = "comboDataset";
+                settings.Width = 180;
+                settings.SelectedIndex = 0;
+                settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+                settings.Properties.TextField = "Code";
+                settings.Properties.ValueField = "Id";
+            }).BindList(Model).GetHtml();
+        });
+
+    });
+
+    s.Items.Add(i =>
+    {
+        i.Caption = "";
+        i.Paddings.PaddingTop = 24;
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "CancelBtn";
+                b.Text = "İptal";
+                b.Style.Add("margin-left", "4px");
+                b.ControlStyle.CssClass = "editFormButton";
+                b.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Template2", Action = "Index" }) + "'; }";
+            }).Render();
+
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "UpdateBtn";
+                b.Text = "İleri";
+                b.ControlStyle.CssClass = "editFormButton";
+                b.UseSubmitBehavior = true;
+            }).Render();
+
+        });
+    });
+}).GetHtml()
+}

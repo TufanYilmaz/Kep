@@ -1,0 +1,17 @@
+﻿@model List<KepNotificationDev.Models.Template2>
+@{
+    ViewBag.Title = "Şablonlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("Template2GridPartial", Model)
+
+<div id="dviPreview">
+
+    @Html.DevExpress().WebDocumentViewer(settings =>
+    {
+        settings.Name = "LepLogPreViewer";
+    }).GetHtml()
+
+</div>

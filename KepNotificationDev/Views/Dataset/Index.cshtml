@@ -1,0 +1,9 @@
+﻿@model List<KepNotificationDev.Models.Datasets>
+@{
+    ViewBag.Title = "Kurallar/Koşullar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Alıcı Verileri</h3>
+
+@Html.Partial("DatasetGridPartial", Model)
+

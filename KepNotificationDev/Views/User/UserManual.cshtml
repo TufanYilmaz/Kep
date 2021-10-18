@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Kullanım Kılavuzu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Kullanım Kılavuzu</h4>
+
+<!--collapse start-->
+<div class="panel-group m-bot20" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    Genel Kılavuz (Pdf)
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <embed src="~/Content/UserManual/UserManual.pdf" width="1200px" height="900px" />
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    Rapor Oluşturma Kılavuzu (Video)
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                <video controls="controls" src="~/Content/UserManual/KepReportTutorial.mp4" width="1200px" height="700px">
+                    İnternet Tarayıcınız HTML5 desteklemiyor.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+<!--collapse end-->
+@*<embed src="~/Content/UserManual/UserManual.pdf" width="1200px" height="900px" />*@

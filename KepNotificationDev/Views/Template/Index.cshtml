@@ -1,0 +1,8 @@
+﻿@model List<KepNotificationDev.Models.Template>
+@{
+    ViewBag.Title = "Şablonlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("TemplateGridPartial", Model)

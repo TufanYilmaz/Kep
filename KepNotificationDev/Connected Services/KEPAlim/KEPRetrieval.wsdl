@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://turkkepgw.turkkep.com.tr" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="KEPRetrieval" targetNamespace="http://turkkepgw.turkkep.com.tr" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://turkkepgw.turkkep.com.tr" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="DelilGetir" type="tns:DelilGetir" />
+      <xs:element name="DelilGetirResponse" type="tns:DelilGetirResponse" />
+      <xs:element name="DelilKutusuListesi" type="tns:DelilKutusuListesi" />
+      <xs:element name="DelilKutusuListesiResponse" type="tns:DelilKutusuListesiResponse" />
+      <xs:element name="DelilListesiByMessageId" type="tns:DelilListesiByMessageId" />
+      <xs:element name="DelilListesiByMessageIdResponse" type="tns:DelilListesiByMessageIdResponse" />
+      <xs:element name="GidenIletiSil" type="tns:GidenIletiSil" />
+      <xs:element name="GidenIletiSilResponse" type="tns:GidenIletiSilResponse" />
+      <xs:element name="GidenKEPIletisiGetir" type="tns:GidenKEPIletisiGetir" />
+      <xs:element name="GidenKEPIletisiGetirResponse" type="tns:GidenKEPIletisiGetirResponse" />
+      <xs:element name="GidenKutusuListesi" type="tns:GidenKutusuListesi" />
+      <xs:element name="GidenKutusuListesiResponse" type="tns:GidenKutusuListesiResponse" />
+      <xs:element name="KEPIletisiGetir" type="tns:KEPIletisiGetir" />
+      <xs:element name="KEPIletisiGetirResponse" type="tns:KEPIletisiGetirResponse" />
+      <xs:element name="KEPIletisiSil" type="tns:KEPIletisiSil" />
+      <xs:element name="KEPIletisiSilResponse" type="tns:KEPIletisiSilResponse" />
+      <xs:element name="KEPPostaKutusuListesi" type="tns:KEPPostaKutusuListesi" />
+      <xs:element name="KEPPostaKutusuListesiResponse" type="tns:KEPPostaKutusuListesiResponse" />
+      <xs:element name="KepDurumBilgisi" type="tns:KepDurumBilgisi" />
+      <xs:element name="KepDurumBilgisiResponse" type="tns:KepDurumBilgisiResponse" />
+      <xs:element name="KepSorgulamaVKN" type="tns:KepSorgulamaVKN" />
+      <xs:element name="KepSorgulamaVKNResponse" type="tns:KepSorgulamaVKNResponse" />
+      <xs:element name="KepSummary" type="tns:KepSummary" />
+      <xs:element name="KepSummary2" type="tns:KepSummary2" />
+      <xs:element name="KepSummary2Response" type="tns:KepSummary2Response" />
+      <xs:element name="KepSummaryResponse" type="tns:KepSummaryResponse" />
+      <xs:element name="KlasorKEPIletisiGetir" type="tns:KlasorKEPIletisiGetir" />
+      <xs:element name="KlasorKEPIletisiGetirResponse" type="tns:KlasorKEPIletisiGetirResponse" />
+      <xs:element name="KlasorKEPIletisiSil" type="tns:KlasorKEPIletisiSil" />
+      <xs:element name="KlasorKEPIletisiSilResponse" type="tns:KlasorKEPIletisiSilResponse" />
+      <xs:element name="KlasorListesiGetir" type="tns:KlasorListesiGetir" />
+      <xs:element name="KlasorListesiGetirResponse" type="tns:KlasorListesiGetirResponse" />
+      <xs:element name="KlasorPostaKutusuListesi" type="tns:KlasorPostaKutusuListesi" />
+      <xs:element name="KlasorPostaKutusuListesiResponse" type="tns:KlasorPostaKutusuListesiResponse" />
+      <xs:element name="KlasorSonUidGetir" type="tns:KlasorSonUidGetir" />
+      <xs:element name="KlasorSonUidGetirResponse" type="tns:KlasorSonUidGetirResponse" />
+      <xs:element name="KontorBilgisi" type="tns:KontorBilgisi" />
+      <xs:element name="KontorBilgisiResponse" type="tns:KontorBilgisiResponse" />
+      <xs:element name="KotaBilgisi" type="tns:KotaBilgisi" />
+      <xs:element name="KotaBilgisiResponse" type="tns:KotaBilgisiResponse" />
+      <xs:element name="ToplamGelenGidenIleti" type="tns:ToplamGelenGidenIleti" />
+      <xs:element name="ToplamGelenGidenIletiResponse" type="tns:ToplamGelenGidenIletiResponse" />
+      <xs:element name="kepIletiIcerigi" type="tns:postaIcerik" />
+      <xs:element name="kepList" type="tns:mailListOutput" />
+      <xs:complexType name="KepSorgulamaVKN">
+        <xs:sequence>
+          <xs:element name="kepSorgulamaVKN" type="tns:vknInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="vknInput">
+        <xs:sequence>
+          <xs:element name="VKN" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepSorgulamaVKNResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:vknSorgulamaResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="vknSorgulamaResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="returList" nillable="true" type="tns:vknSorgulamaOutput" />
+          <xs:element minOccurs="0" name="sonucAciklama" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="vknSorgulamaOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepAdresi" type="xs:string" />
+          <xs:element minOccurs="0" name="mersisNo" type="xs:string" />
+          <xs:element minOccurs="0" name="tuzelKisiAdi" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorKEPIletisiGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletisi" type="tns:postaIletiID" />
+          <xs:element name="kepFolder" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="authInput">
+        <xs:sequence>
+          <xs:element name="islemYetkiliKodu" nillable="true" type="xs:string" />
+          <xs:element name="kullaniciAdi" type="xs:string" />
+          <xs:element name="kullaniciSifresi" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="postaIletiID">
+        <xs:sequence>
+          <xs:element name="iletiIcerigi" type="xs:string" />
+          <xs:element name="iletiMsgID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorKEPIletisiGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="klasorKEPIletisiGetir" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="postaIcerikResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="iletiIcerigi" type="tns:postaIcerik" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="postaIcerik">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepCC" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEventCode" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEvidenceType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepFrom" type="xs:string" />
+          <xs:element minOccurs="0" name="kepIleti" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMessageID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMsgType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepReceivedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSendDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSubject" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiTip" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRgunSayac" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTo" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUAMessageIdentifier" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenIletiSil">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletiID" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenIletiSilResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepSummary">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="KepSummaryInput" type="tns:kepSummaryInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummaryInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="baslangicTarihi" type="xs:string" />
+          <xs:element minOccurs="0" name="bitisTarihi" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepSummaryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="KepSummary" type="tns:kepSummaryResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummaryResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="summaryList" nillable="true" type="tns:kepSummaryOutput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummaryOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="msgid_byremmd" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_from_email" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_mg_datetime" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_msgid" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_subject" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_to" type="xs:string" />
+          <xs:element name="sum_acc" type="xs:int" />
+          <xs:element name="sum_del" type="xs:int" />
+          <xs:element name="sum_reject" type="xs:int" />
+          <xs:element name="sum_ret" type="xs:int" />
+          <xs:element name="sum_retex" type="xs:int" />
+          <xs:element name="sunm_delex" type="xs:int" />
+          <xs:element minOccurs="0" name="sys_datetime" type="xs:string" />
+          <xs:element minOccurs="0" name="yon" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilKutusuListesi">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="Secenekler" type="tns:mailGidenListInput" />
+          <xs:element name="Paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailGidenListInput">
+        <xs:sequence>
+          <xs:element name="baslangicTarihi" nillable="true" type="xs:string" />
+          <xs:element name="bitisTarihi" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="paging">
+        <xs:sequence>
+          <xs:element default="0" name="kepUIDEndTo" nillable="true" type="xs:long" />
+          <xs:element default="0" name="kepUIDStartFrom" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilKutusuListesiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="delilKutusu" type="tns:evidanceListResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="evidanceListResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="mailList" nillable="true" type="tns:evidanceListOutput" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="evidanceListOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepCC" type="xs:string" />
+          <xs:element minOccurs="0" name="kepFrom" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMessageID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepReceivedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSendDate" type="xs:dateTime" />
+          <xs:element name="kepSize" type="xs:int" />
+          <xs:element minOccurs="0" name="kepSubject" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiTip" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRgunSayac" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTo" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUAMessageIdentifier" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUID" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ToplamGelenGidenIleti">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ToplamGelenGidenIletiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="toplamGelenGidenIleti" type="tns:toplamGelenGidenIletiResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="toplamGelenGidenIletiResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="gelenToplam" type="xs:integer" />
+          <xs:element minOccurs="0" name="gidenKontor" type="xs:double" />
+          <xs:element minOccurs="0" name="gidenToplam" type="xs:integer" />
+          <xs:element minOccurs="0" name="sonucAciklama" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilListesiByMessageId">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="Secenekler" type="tns:getEvidenceListByMessageidInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEvidenceListByMessageidInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="messageId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilListesiByMessageIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DelilListesiByMessageId" type="tns:getEvidenceListByMessageidResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEvidenceListByMessageidResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="getEviList" nillable="true" type="tns:getEvidenceListByMessageidOutput" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getEvidenceListByMessageidOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="evidence_event_code" type="xs:string" />
+          <xs:element minOccurs="0" name="evidence_kephs_domain" type="xs:string" />
+          <xs:element minOccurs="0" name="evidence_refer_kep_email" type="xs:string" />
+          <xs:element name="evidence_type" type="xs:int" />
+          <xs:element minOccurs="0" name="msgid_byremmd" type="xs:string" />
+          <xs:element minOccurs="0" name="orig_msgid" type="xs:string" />
+          <xs:element minOccurs="0" name="sys_datetime" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepSummary2">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="KepSummary2Input" type="tns:kepSummary2Input" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummary2Input">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="baslangicTarihi" type="xs:string" />
+          <xs:element minOccurs="0" name="bitisTarihi" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepSummary2Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="KepSummary2" type="tns:kepSummary2Result" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummary2Result">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="summaryList" nillable="true" type="tns:kepSummary2Output" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSummary2Output">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="r_kepadresi" type="xs:string" />
+          <xs:element name="r_message_count" type="xs:int" />
+          <xs:element name="r_sum_acc" type="xs:int" />
+          <xs:element name="r_sum_del" type="xs:int" />
+          <xs:element name="r_sum_delex" type="xs:int" />
+          <xs:element name="r_sum_reject" type="xs:int" />
+          <xs:element name="r_sum_ret" type="xs:int" />
+          <xs:element name="r_sum_retex" type="xs:int" />
+          <xs:element minOccurs="0" name="r_sys_datetime" type="xs:string" />
+          <xs:element minOccurs="0" name="yon" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorSonUidGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepFolder" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorSonUidGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="klasorSonUidGetir" type="tns:getLastUidByFolderNameResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getLastUidByFolderNameResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+          <xs:element minOccurs="0" name="uid" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorPostaKutusuListesi">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="Secenekler" type="tns:getMailBoxByFolderNameInput" />
+          <xs:element name="Paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMailBoxByFolderNameInput">
+        <xs:sequence>
+          <xs:element name="postaKutusu" nillable="true" type="xs:string" />
+          <xs:element name="baslangicTarihi" nillable="true" type="xs:string" />
+          <xs:element name="bitisTarihi" nillable="true" type="xs:string" />
+          <xs:element name="iletiTuru" nillable="true" type="xs:string" />
+          <xs:element default="New" name="listelemeTuru" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorPostaKutusuListesiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="KlasorPostaKutusuListesi" type="tns:getMailBoxByFolderNameResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMailBoxByFolderNameResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="mailList" nillable="true" type="tns:getMailBoxByFolderNameOutput" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getMailBoxByFolderNameOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepCC" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEventCode" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEvidenceType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepFrom" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMessageID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMsgType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepReceivedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSendDate" type="xs:dateTime" />
+          <xs:element name="kepSize" type="xs:int" />
+          <xs:element minOccurs="0" name="kepSubject" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiTip" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRgunSayac" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTo" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUAMessageIdentifier" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUID" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorListesiGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorListesiGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="klasorListesiGetir" type="tns:getFolderListResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getFolderListResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="mailList" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenKutusuListesi">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="Secenekler" type="tns:mailGidenListInput" />
+          <xs:element name="Paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenKutusuListesiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="gidenKutusu" type="tns:mailGidenListResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailGidenListResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="mailList" nillable="true" type="tns:mailGidenListOutput" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailGidenListOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepCC" type="xs:string" />
+          <xs:element minOccurs="0" name="kepFrom" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMessageID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepReceivedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSendDate" type="xs:dateTime" />
+          <xs:element name="kepSize" type="xs:int" />
+          <xs:element minOccurs="0" name="kepSubject" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiTip" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRgunSayac" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTo" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUID" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorKEPIletisiSil">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletiID" type="xs:string" />
+          <xs:element name="postaKutusu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KlasorKEPIletisiSilResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="delil" type="tns:postaIletiID" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DelilGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="delilKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KontorBilgisi">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KontorBilgisiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kontorBilgisi" type="tns:kontorBilgisiResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kontorBilgisiResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="giden_kontor" type="xs:double" />
+          <xs:element minOccurs="0" name="sonucAciklama" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="toplam_kontor" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenKEPIletisiGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletisi" type="tns:gidenPostaID" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="gidenPostaID">
+        <xs:sequence>
+          <xs:element name="iletiMsgID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GidenKEPIletisiGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPPostaKutusuListesi">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="Secenekler" type="tns:mailListInput" />
+          <xs:element name="Paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailListInput">
+        <xs:sequence>
+          <xs:element name="baslangicTarihi" nillable="true" type="xs:string" />
+          <xs:element name="bitisTarihi" nillable="true" type="xs:string" />
+          <xs:element name="iletiTuru" nillable="true" type="xs:string" />
+          <xs:element default="New" name="listelemeTuru" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPPostaKutusuListesiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:mailListResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailListResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="mailList" nillable="true" type="tns:mailListOutput" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="mailListOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepCC" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEventCode" type="xs:string" />
+          <xs:element minOccurs="0" name="kepEvidenceType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepFrom" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMessageID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepMsgType" type="xs:string" />
+          <xs:element minOccurs="0" name="kepReceivedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="kepSendDate" type="xs:dateTime" />
+          <xs:element name="kepSize" type="xs:int" />
+          <xs:element minOccurs="0" name="kepSubject" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiID" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRIletiTip" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTRgunSayac" type="xs:string" />
+          <xs:element minOccurs="0" name="kepTo" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUAMessageIdentifier" type="xs:string" />
+          <xs:element minOccurs="0" name="kepUID" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepDurumBilgisi">
+        <xs:sequence>
+          <xs:element name="kepDurumBilgisi" type="tns:kepAdresiInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepAdresiInput">
+        <xs:sequence>
+          <xs:element name="kepAdresi" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KepDurumBilgisiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepDurumBilgisi" type="tns:kepSorgulamaResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kepSorgulamaResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kepAdresi" type="xs:string" />
+          <xs:element minOccurs="0" name="kepDurumSonucu" type="xs:string" />
+          <xs:element minOccurs="0" name="kepDurumu" type="xs:int" />
+          <xs:element minOccurs="0" name="sonucAciklama" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KotaBilgisi">
+        <xs:sequence>
+          <xs:element name="KotaBilgisi" type="tns:authInput" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KotaBilgisiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="kotaBilgisi" type="tns:kotaBilgisiResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="kotaBilgisiResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="saklamaAlaniKullanilan" type="xs:integer" />
+          <xs:element minOccurs="0" name="saklamaAlaniToplam" type="xs:integer" />
+          <xs:element minOccurs="0" name="sonucAciklama" type="xs:string" />
+          <xs:element minOccurs="0" name="sonucKodu" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPIletisiSil">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletiID" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPIletisiSilResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPIletisiGetir">
+        <xs:sequence>
+          <xs:element name="KepKimlikDogrulama" type="tns:authInput" />
+          <xs:element name="kepIletisi" type="tns:postaIletiID" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="KEPIletisiGetirResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="postaKutusu" type="tns:postaIcerikResult" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GeneralSecurityException" type="tns:GeneralSecurityException" />
+      <xs:complexType name="GeneralSecurityException">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:element name="Exception" type="tns:Exception" />
+      <xs:complexType name="Exception">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GidenKutusuListesiResponse">
+    <wsdl:part name="parameters" element="tns:GidenKutusuListesiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorSonUidGetirResponse">
+    <wsdl:part name="parameters" element="tns:KlasorSonUidGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="KEPIletisiGetirResponse">
+    <wsdl:part name="parameters" element="tns:KEPIletisiGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelilKutusuListesiResponse">
+    <wsdl:part name="parameters" element="tns:DelilKutusuListesiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KepSummaryResponse">
+    <wsdl:part name="parameters" element="tns:KepSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="KepSummary2">
+    <wsdl:part name="parameters" element="tns:KepSummary2" />
+  </wsdl:message>
+  <wsdl:message name="KEPIletisiSilResponse">
+    <wsdl:part name="parameters" element="tns:KEPIletisiSilResponse" />
+  </wsdl:message>
+  <wsdl:message name="KontorBilgisi">
+    <wsdl:part name="parameters" element="tns:KontorBilgisi" />
+  </wsdl:message>
+  <wsdl:message name="GidenKutusuListesi">
+    <wsdl:part name="parameters" element="tns:GidenKutusuListesi" />
+  </wsdl:message>
+  <wsdl:message name="DelilKutusuListesi">
+    <wsdl:part name="parameters" element="tns:DelilKutusuListesi" />
+  </wsdl:message>
+  <wsdl:message name="Exception">
+    <wsdl:part name="Exception" element="tns:Exception" />
+  </wsdl:message>
+  <wsdl:message name="KontorBilgisiResponse">
+    <wsdl:part name="parameters" element="tns:KontorBilgisiResponse" />
+  </wsdl:message>
+  <wsdl:message name="GidenIletiSilResponse">
+    <wsdl:part name="parameters" element="tns:GidenIletiSilResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorKEPIletisiGetirResponse">
+    <wsdl:part name="parameters" element="tns:KlasorKEPIletisiGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="KEPIletisiGetir">
+    <wsdl:part name="parameters" element="tns:KEPIletisiGetir" />
+  </wsdl:message>
+  <wsdl:message name="KotaBilgisiResponse">
+    <wsdl:part name="parameters" element="tns:KotaBilgisiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorKEPIletisiSilResponse">
+    <wsdl:part name="parameters" element="tns:KlasorKEPIletisiSilResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelilGetirResponse">
+    <wsdl:part name="parameters" element="tns:DelilGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="ToplamGelenGidenIletiResponse">
+    <wsdl:part name="parameters" element="tns:ToplamGelenGidenIletiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorKEPIletisiSil">
+    <wsdl:part name="parameters" element="tns:KlasorKEPIletisiSil" />
+  </wsdl:message>
+  <wsdl:message name="GidenIletiSil">
+    <wsdl:part name="parameters" element="tns:GidenIletiSil" />
+  </wsdl:message>
+  <wsdl:message name="DelilGetir">
+    <wsdl:part name="parameters" element="tns:DelilGetir" />
+  </wsdl:message>
+  <wsdl:message name="KEPIletisiSil">
+    <wsdl:part name="parameters" element="tns:KEPIletisiSil" />
+  </wsdl:message>
+  <wsdl:message name="KlasorListesiGetirResponse">
+    <wsdl:part name="parameters" element="tns:KlasorListesiGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorKEPIletisiGetir">
+    <wsdl:part name="parameters" element="tns:KlasorKEPIletisiGetir" />
+  </wsdl:message>
+  <wsdl:message name="KlasorPostaKutusuListesi">
+    <wsdl:part name="parameters" element="tns:KlasorPostaKutusuListesi" />
+  </wsdl:message>
+  <wsdl:message name="GidenKEPIletisiGetirResponse">
+    <wsdl:part name="parameters" element="tns:GidenKEPIletisiGetirResponse" />
+  </wsdl:message>
+  <wsdl:message name="ToplamGelenGidenIleti">
+    <wsdl:part name="parameters" element="tns:ToplamGelenGidenIleti" />
+  </wsdl:message>
+  <wsdl:message name="KEPPostaKutusuListesi">
+    <wsdl:part name="parameters" element="tns:KEPPostaKutusuListesi" />
+  </wsdl:message>
+  <wsdl:message name="DelilListesiByMessageIdResponse">
+    <wsdl:part name="parameters" element="tns:DelilListesiByMessageIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="KlasorSonUidGetir">
+    <wsdl:part name="parameters" element="tns:KlasorSonUidGetir" />
+  </wsdl:message>
+  <wsdl:message name="GeneralSecurityException">
+    <wsdl:part name="GeneralSecurityException" element="tns:GeneralSecurityException" />
+  </wsdl:message>
+  <wsdl:message name="KepSorgulamaVKNResponse">
+    <wsdl:part name="parameters" element="tns:KepSorgulamaVKNResponse" />
+  </wsdl:message>
+  <wsdl:message name="KepSorgulamaVKN">
+    <wsdl:part name="parameters" element="tns:KepSorgulamaVKN" />
+  </wsdl:message>
+  <wsdl:message name="KepDurumBilgisiResponse">
+    <wsdl:part name="parameters" element="tns:KepDurumBilgisiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KEPPostaKutusuListesiResponse">
+    <wsdl:part name="parameters" element="tns:KEPPostaKutusuListesiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KepSummary2Response">
+    <wsdl:part name="parameters" element="tns:KepSummary2Response" />
+  </wsdl:message>
+  <wsdl:message name="GidenKEPIletisiGetir">
+    <wsdl:part name="parameters" element="tns:GidenKEPIletisiGetir" />
+  </wsdl:message>
+  <wsdl:message name="KepSummary">
+    <wsdl:part name="parameters" element="tns:KepSummary" />
+  </wsdl:message>
+  <wsdl:message name="DelilListesiByMessageId">
+    <wsdl:part name="parameters" element="tns:DelilListesiByMessageId" />
+  </wsdl:message>
+  <wsdl:message name="KlasorPostaKutusuListesiResponse">
+    <wsdl:part name="parameters" element="tns:KlasorPostaKutusuListesiResponse" />
+  </wsdl:message>
+  <wsdl:message name="KepDurumBilgisi">
+    <wsdl:part name="parameters" element="tns:KepDurumBilgisi" />
+  </wsdl:message>
+  <wsdl:message name="KlasorListesiGetir">
+    <wsdl:part name="parameters" element="tns:KlasorListesiGetir" />
+  </wsdl:message>
+  <wsdl:message name="KotaBilgisi">
+    <wsdl:part name="parameters" element="tns:KotaBilgisi" />
+  </wsdl:message>
+  <wsdl:portType name="KEPRetrieval">
+    <wsdl:operation name="KepSorgulamaVKN">
+      <wsdl:input name="KepSorgulamaVKN" message="tns:KepSorgulamaVKN" />
+      <wsdl:output name="KepSorgulamaVKNResponse" message="tns:KepSorgulamaVKNResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="KlasorKEPIletisiGetir">
+      <wsdl:input name="KlasorKEPIletisiGetir" message="tns:KlasorKEPIletisiGetir" />
+      <wsdl:output name="KlasorKEPIletisiGetirResponse" message="tns:KlasorKEPIletisiGetirResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="GidenIletiSil">
+      <wsdl:input name="GidenIletiSil" message="tns:GidenIletiSil" />
+      <wsdl:output name="GidenIletiSilResponse" message="tns:GidenIletiSilResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KepSummary">
+      <wsdl:input name="KepSummary" message="tns:KepSummary" />
+      <wsdl:output name="KepSummaryResponse" message="tns:KepSummaryResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="DelilKutusuListesi">
+      <wsdl:input name="DelilKutusuListesi" message="tns:DelilKutusuListesi" />
+      <wsdl:output name="DelilKutusuListesiResponse" message="tns:DelilKutusuListesiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="ToplamGelenGidenIleti">
+      <wsdl:input name="ToplamGelenGidenIleti" message="tns:ToplamGelenGidenIleti" />
+      <wsdl:output name="ToplamGelenGidenIletiResponse" message="tns:ToplamGelenGidenIletiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="DelilListesiByMessageId">
+      <wsdl:input name="DelilListesiByMessageId" message="tns:DelilListesiByMessageId" />
+      <wsdl:output name="DelilListesiByMessageIdResponse" message="tns:DelilListesiByMessageIdResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KepSummary2">
+      <wsdl:input name="KepSummary2" message="tns:KepSummary2" />
+      <wsdl:output name="KepSummary2Response" message="tns:KepSummary2Response" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KlasorSonUidGetir">
+      <wsdl:input name="KlasorSonUidGetir" message="tns:KlasorSonUidGetir" />
+      <wsdl:output name="KlasorSonUidGetirResponse" message="tns:KlasorSonUidGetirResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KlasorPostaKutusuListesi">
+      <wsdl:input name="KlasorPostaKutusuListesi" message="tns:KlasorPostaKutusuListesi" />
+      <wsdl:output name="KlasorPostaKutusuListesiResponse" message="tns:KlasorPostaKutusuListesiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KlasorListesiGetir">
+      <wsdl:input name="KlasorListesiGetir" message="tns:KlasorListesiGetir" />
+      <wsdl:output name="KlasorListesiGetirResponse" message="tns:KlasorListesiGetirResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="GidenKutusuListesi">
+      <wsdl:input name="GidenKutusuListesi" message="tns:GidenKutusuListesi" />
+      <wsdl:output name="GidenKutusuListesiResponse" message="tns:GidenKutusuListesiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KlasorKEPIletisiSil">
+      <wsdl:input name="KlasorKEPIletisiSil" message="tns:KlasorKEPIletisiSil" />
+      <wsdl:output name="KlasorKEPIletisiSilResponse" message="tns:KlasorKEPIletisiSilResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="DelilGetir">
+      <wsdl:input name="DelilGetir" message="tns:DelilGetir" />
+      <wsdl:output name="DelilGetirResponse" message="tns:DelilGetirResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KontorBilgisi">
+      <wsdl:input name="KontorBilgisi" message="tns:KontorBilgisi" />
+      <wsdl:output name="KontorBilgisiResponse" message="tns:KontorBilgisiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="GidenKEPIletisiGetir">
+      <wsdl:input name="GidenKEPIletisiGetir" message="tns:GidenKEPIletisiGetir" />
+      <wsdl:output name="GidenKEPIletisiGetirResponse" message="tns:GidenKEPIletisiGetirResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KEPPostaKutusuListesi">
+      <wsdl:input name="KEPPostaKutusuListesi" message="tns:KEPPostaKutusuListesi" />
+      <wsdl:output name="KEPPostaKutusuListesiResponse" message="tns:KEPPostaKutusuListesiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KepDurumBilgisi">
+      <wsdl:input name="KepDurumBilgisi" message="tns:KepDurumBilgisi" />
+      <wsdl:output name="KepDurumBilgisiResponse" message="tns:KepDurumBilgisiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KotaBilgisi">
+      <wsdl:input name="KotaBilgisi" message="tns:KotaBilgisi" />
+      <wsdl:output name="KotaBilgisiResponse" message="tns:KotaBilgisiResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KEPIletisiSil">
+      <wsdl:input name="KEPIletisiSil" message="tns:KEPIletisiSil" />
+      <wsdl:output name="KEPIletisiSilResponse" message="tns:KEPIletisiSilResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+    <wsdl:operation name="KEPIletisiGetir">
+      <wsdl:input name="KEPIletisiGetir" message="tns:KEPIletisiGetir" />
+      <wsdl:output name="KEPIletisiGetirResponse" message="tns:KEPIletisiGetirResponse" />
+      <wsdl:fault name="GeneralSecurityException" message="tns:GeneralSecurityException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="KEPRetrievalSoapBinding" type="tns:KEPRetrieval">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="KepSorgulamaVKN">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KepSorgulamaVKN">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KepSorgulamaVKNResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KlasorKEPIletisiGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KlasorKEPIletisiGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KlasorKEPIletisiGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GidenIletiSil">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="GidenIletiSil">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GidenIletiSilResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KepSummary">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KepSummary">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KepSummaryResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DelilKutusuListesi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="DelilKutusuListesi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="DelilKutusuListesiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ToplamGelenGidenIleti">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="ToplamGelenGidenIleti">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ToplamGelenGidenIletiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DelilListesiByMessageId">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="DelilListesiByMessageId">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="DelilListesiByMessageIdResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KepSummary2">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KepSummary2">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KepSummary2Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KlasorSonUidGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KlasorSonUidGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KlasorSonUidGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KlasorPostaKutusuListesi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KlasorPostaKutusuListesi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KlasorPostaKutusuListesiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KlasorListesiGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KlasorListesiGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KlasorListesiGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GidenKutusuListesi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="GidenKutusuListesi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GidenKutusuListesiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KlasorKEPIletisiSil">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KlasorKEPIletisiSil">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KlasorKEPIletisiSilResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DelilGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="DelilGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="DelilGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KontorBilgisi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KontorBilgisi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KontorBilgisiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GidenKEPIletisiGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="GidenKEPIletisiGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GidenKEPIletisiGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KEPPostaKutusuListesi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KEPPostaKutusuListesi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KEPPostaKutusuListesiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KepDurumBilgisi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KepDurumBilgisi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KepDurumBilgisiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KEPIletisiSil">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KEPIletisiSil">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KEPIletisiSilResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KotaBilgisi">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KotaBilgisi">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KotaBilgisiResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="KEPIletisiGetir">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="KEPIletisiGetir">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="KEPIletisiGetirResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="GeneralSecurityException">
+        <soap:fault use="literal" name="GeneralSecurityException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="KEPRetrieval">
+    <wsdl:port name="KEPRetrievalPort" binding="tns:KEPRetrievalSoapBinding">
+      <soap:address location="https://eriwstest.turkkep.com.tr/KEPWSClient/KEPRetrieval" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

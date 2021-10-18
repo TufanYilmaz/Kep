@@ -1,0 +1,23 @@
+﻿@model List<KepNotificationDev.Models.Template>
+
+@Html.DevExpress().ComboBox(c =>
+{
+    c.Name = "cmbReport";
+    c.CallbackRouteValues = new { Controller = "Send", Action = "GetTemplates" };
+    c.Properties.TextField = "Code";
+    c.Properties.ValueField = "Id";
+    c.Width = Unit.Percentage(100);
+    
+    //c.Properties.DropDownStyle = DropDownStyle.DropDown;
+    c.Properties.DropDownStyle = DropDownStyle.DropDownList;
+    c.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+
+    c.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedIndexChangedTemplates";
+    c.Properties.ClientSideEvents.ButtonClick = "OnTemplatesButtonClick";
+    c.Properties.ClientSideEvents.BeginCallback = "function(s, e) { e.customArgs['dataset'] = cmbDataset.GetValue(); }";
+    c.PreRender = (sender, e) =>
+    {
+        ASPxComboBox cmb = (ASPxComboBox)sender;
+        cmb.Buttons.Add(new EditButton("X"));
+    };
+}).BindList(Model).GetHtml()

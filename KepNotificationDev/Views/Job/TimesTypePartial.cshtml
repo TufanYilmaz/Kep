@@ -1,0 +1,14 @@
+﻿@model KepNotificationDev.Models.ViewModels.JobViewModel
+@Html.DevExpress().ComboBox(settings => {
+
+    settings.Width = Unit.Percentage(100);
+    settings.ControlStyle.CssClass = "maxWidth";
+    settings.Name = "DateTimesType";
+    settings.CallbackRouteValues = new { Controller = "Job", Action = "TimesTypePartial" };
+    settings.Properties.ValueType = typeof(int);
+    //settings.Properties.ClientSideEvents.SelectedIndexChanged = "function(s, e) { City.PerformCallback(); }";
+    settings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+    settings.Properties.TextField = "Value";
+    settings.Properties.ValueField = "Key";
+    //settings.Properties.DataSource = System.Enum.GetValues(typeof(KepNotificationDev.Helpers.Service.TimeTypes));
+}).BindList(Model.TimesTypes != null ? Model.TimesTypes : new Dictionary<int, string>()).Bind(Model.Job.DateTimesType).GetHtml()  

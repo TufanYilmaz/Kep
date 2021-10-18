@@ -1,0 +1,15 @@
+﻿@*@model List<string>*@
+
+@Html.DevExpress().ComboBox(settings =>
+{
+    settings.Name = "cmbDepartment";
+    settings.CallbackRouteValues = new { Controller = "Send", Action = "RecieverDepartmentPartial" };
+    //settings.Properties.ValueType = typeof(string);
+    settings.Properties.TextField = "CODE";
+    settings.Properties.ValueField = "ID";
+    settings.ClientVisible = false;
+    settings.Properties.ClientSideEvents.SelectedIndexChanged =
+    @"function(s,e){MyMailMessage_Recievers.GetGridView().PerformCallback();
+        selectedSubs = [];}";
+    //settings.Properties.CallbackPageSize = 5;
+}).BindList(KepNotificationDev.Helpers.DBHelper.GetInvoiceDepartments()).GetHtml()

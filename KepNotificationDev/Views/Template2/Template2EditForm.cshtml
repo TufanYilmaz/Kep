@@ -1,0 +1,118 @@
+﻿@model KepNotificationDev.Models.ViewModels.Template2ViewModel
+@{
+    ViewBag.Title = "TemplateEditForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<script>
+    function OnSelectedIndexChangedDataset(s, e) {
+        console.log(s.GetValue());
+        $.ajax({
+            url: '/template2/SelectDataset',
+            data: { "Id": s.GetValue() },
+            type: 'GET',
+            success: function (data) {
+                $('#divHtmlEditor').html(data);
+            }
+        });
+    }
+    function onSaveQueryCommandExecuted(s, e) {
+        //console.log("1" + e);
+        //console.log("2" + e.Result);
+        var result = JSON.parse(e.Result);
+        if (result.queryValidationError) {
+            alert(result.queryValidationError);
+        } else {
+            //console.log("1" + result.resultQuery);
+            Dataset.SetText(result.resultQuery);
+            QueryBuilderModal.Hide();
+        }
+    }
+    $(function () {
+
+    });
+</script>
+@using (Html.BeginForm("AddTemplate", "Template2", FormMethod.Post, new { @class = "edit_form" }))
+{
+    @Html.HiddenFor(m => m.Template.Id);
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "template2EditFormLayout";
+    s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    s.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+    s.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    s.UseDefaultPaddings = false;
+
+
+    s.Items.Add(m => m.Template.Code, i =>
+    {
+        i.NestedExtension().TextBox(t =>
+        {
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            t.ShowModelErrors = true;
+        });
+    });
+    s.Items.Add(m => m.Template.Info, i =>
+    {
+        i.NestedExtension().TextBox(t =>
+        {
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            t.ShowModelErrors = true;
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Name = "DatasetsField";
+        i.Caption = "Veri Modeli";
+        i.NestedExtension().ComboBox(c =>
+        {
+            c.Name = "cmbDatasets";
+            c.Width = 200;
+            c.Properties.TextField = "Code";
+            c.Properties.ValueField = "Id";
+            c.Properties.DataSource = Model.Dataset;
+            c.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedIndexChangedDataset";
+        });
+    });
+    s.Items.Add(m=>m.Template.Content,item =>
+    {
+        item.Caption = "Content";
+
+        item.SetNestedContent(() =>
+        {
+
+            ViewContext.Writer.Write("<div class=\"divHtmlEditor\" id=\"divHtmlEditor\">");
+            //Html.RenderPartial("_Template2EditorPartial",Model.Dataset.);
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "";
+        i.Paddings.PaddingTop = 24;
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "UpdateBtn";
+                b.Text = Model.Template.Id > 0 ? "Güncelle" : "Oluştur";
+                b.ControlStyle.CssClass = "editFormButton";
+                b.UseSubmitBehavior = true;
+            }).Render();
+            Html.DevExpress().Button(b =>
+            {
+                b.Name = "CancelBtn";
+                b.Text = Model.Template.Id > 0 ? "Geri" : "İptal";
+                b.Style.Add("margin-left", "4px");
+                b.ControlStyle.CssClass = "editFormButton";
+                b.ClientSideEvents.Click = "function(s, e){ document.location='" + DevExpressHelper.GetUrl(new { Controller = "Template2", Action = "Index" }) + "'; }";
+            }).Render();
+        });
+    });
+}).GetHtml()
+}

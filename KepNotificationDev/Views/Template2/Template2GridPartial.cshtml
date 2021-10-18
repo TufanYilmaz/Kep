@@ -1,0 +1,55 @@
+﻿
+@model List<KepNotificationDev.Models.Template2>
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "gvTemplate2Grid";
+    settings.KeyFieldName = "Id";
+    settings.CallbackRouteValues = new { Controller = "Template2", Action = "Index" };
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+    settings.Columns.Add(c =>
+    {
+        c.Caption = "#";
+        c.SetDataItemTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write(
+                Html.ActionLink("Düzenle", "EditTemplate", new { Id = DataBinder.Eval(tc.DataItem, "Id") }) + "&nbsp;" +
+                Html.ActionLink("Sil", "DeleteTemplate", new { Id = DataBinder.Eval(tc.DataItem, "Id") },
+                    new { onclick = "return confirm('Bu kaydı silmek istediğinize emin misiniz?')" })
+            );
+        });
+        c.SetHeaderTemplateContent(tc =>
+        {
+            ViewContext.Writer.Write(
+                Html.ActionLink("Yeni", "NewTemplate", new { Id = -1 }).ToHtmlString()
+            );
+        });
+        c.Settings.AllowDragDrop = DefaultBoolean.False;
+        c.Settings.AllowSort = DefaultBoolean.False;
+        c.Width = 70;
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.Name = "Code";
+        c.FieldName = "Code";
+        c.Width = 70;
+    });
+
+
+    //settings.Columns.Add("Code");
+    settings.Columns.Add("Info");
+
+    settings.ClientLayout = (s, e) =>
+    {
+        if (e.LayoutMode == ClientLayoutMode.Loading)
+        {
+            if (Session["GridState"] != null)
+                e.LayoutData = (string)Session["GridState"];
+        }
+        else
+            Session["GridState"] = e.LayoutData;
+    };
+
+    //DevExpress.Web.Demos.GridViewFeaturesHelper.SetupGlobalGridViewBehavior(settings);
+}).Bind(Model).GetHtml()

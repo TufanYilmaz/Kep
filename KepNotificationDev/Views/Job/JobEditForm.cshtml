@@ -1,0 +1,322 @@
+﻿@model KepNotificationDev.Models.ViewModels.JobViewModel
+            
+@{
+    //Model.TimesTypes!=null ? Model.TimesTypes: new Dictionary<int, string>()
+
+    ViewBag.Title = "Servis Düzenleme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@functions{
+    private void AssignTextBoxSettings(TextBoxSettings s)
+    {
+        s.ShowModelErrors = true;
+        s.ControlStyle.CssClass = "maxWidth";
+        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+        s.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+        s.Properties.ValidationSettings.Display = Display.Dynamic;
+        s.Properties.ValidationSettings.ErrorFrameStyle.Wrap = DefaultBoolean.True;
+    }
+}
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+@section AdditionalResources {
+    <style type="text/css">
+        @@media(max-width:840px) {
+            .mobileGroupIndent {
+                padding-top: 20px !important;
+            }
+        }
+
+        .mobileAlign {
+            text-align: center !important;
+        }
+
+        .maxWidth {
+            max-width: 460px !important;
+        }
+
+        .fullHeight {
+            height: 100% !important;
+        }
+
+        .fullWidth {
+            width: 100% !important;
+        }
+
+        form {
+            padding-top: 30px !important;
+            padding-bottom: 30px !important;
+        }
+    </style>
+}
+<script>
+    function onIntervalTypeChanged(s, e) {
+        lblJobIntervalType.SetText(s.GetText());
+    }
+    function onIntervalChanged(s, e) {
+        lblJobInterval.SetText(s.GetText());
+    }
+    function onSaveCommandExecuted(s, e) {
+
+    }
+</script>
+<h3>Taslak Servisi</h3>
+
+@using (Html.BeginForm("AddOrUpdateJob", "Job", FormMethod.Post, new { @class = "edit_form" }))
+{
+    @Html.HiddenFor(m => m.Job.Id);
+    @Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "jobEditFormLayout";
+    settings.AlignItemCaptionsInAllGroups = true;
+    settings.UseDefaultPaddings = false;
+    settings.ColumnCount = 2;
+    settings.Width = Unit.Percentage(100);
+
+    settings.Styles.LayoutGroupBox.CssClass = "fullHeight fullWidth";
+    settings.Styles.LayoutGroup.Cell.CssClass = "fullHeight";
+
+    settings.SettingsAdaptivity.GridSettings.Breakpoints.Add(new LayoutBreakpoint { ColumnCount = 1, MaxWidth = 790, Name = "S" });
+
+    settings.Items.AddGroupItem(m => m, g =>
+    {
+        g.Caption = "Genel";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+
+        g.Items.Add(m => m.Job.Code, i =>
+        {
+            i.NestedExtension().TextBox(s =>
+            {
+                AssignTextBoxSettings(s);
+            });
+        });
+        g.Items.Add(m => m.Job.Info, i =>
+        {
+            i.NestedExtension().TextBox(s =>
+            {
+                AssignTextBoxSettings(s);
+            });
+        });
+
+    });
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Caption = "";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.RowSpan = 4;
+        g.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+        g.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnPreview";
+                    b.Text = "Önizle";
+
+                });
+            });
+        });
+        g.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(() =>
+            {
+
+            });
+        });
+    });
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Caption = "Bilgiler/Veriler";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+        g.Items.Add(m => m.Job.ReceiverId, i =>
+        {
+            i.NestedExtension().ComboBox(s =>
+            {
+                s.ControlStyle.CssClass = "maxWidth";
+                s.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                s.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                s.Properties.TextField = "Info";
+                s.Properties.ValueField = "Id";
+                s.Properties.DataSource = Model.RecieverDatasets;
+                s.Properties.NullText = "";
+                s.Properties.NullDisplayText = "";
+            });
+        });
+
+        g.Items.Add(m => m.Job.ReportId, i =>
+        {
+            i.NestedExtension().ComboBox(s =>
+            {
+                s.ControlStyle.CssClass = "maxWidth";
+                s.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                s.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                s.Properties.TextField = "Code";
+                s.Properties.ValueField = "Id";
+                s.Properties.DataSource = Model.Templates;
+            });
+        });
+    });
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Caption = "İş Tanımı";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+        g.Items.Add(m => m.Job.IntervalType, i =>
+        {
+            i.NestedExtension().ComboBox(s =>
+            {
+                s.ControlStyle.CssClass = "maxWidth";
+                s.Properties.DropDownStyle = DropDownStyle.DropDownList;
+                s.Properties.DataSource = System.Enum.GetValues(typeof(KepNotificationDev.Helpers.Service.IntervalTypes));
+                //s.Properties.DataSource = KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.IntervalTypes>.GetDisplayValues(KepNotificationDev.Helpers.Service.IntervalTypes.Day);
+                s.Properties.ClientSideEvents.SelectedIndexChanged = "function (s,e){ lblJobIntervalType.SetText(s.GetText()); }";
+                //if(Model.Job.Id<0)
+                //{
+                //    s.SelectedIndex = -1;
+                //}
+            });
+        });
+        g.Items.Add(m => m.Job.Interval, i =>
+        {
+            g.Name = "IntervalValue";
+            i.NestedExtension().TextBox(s =>
+            {
+                AssignTextBoxSettings(s);
+                s.Properties.MaskSettings.Mask = "<0..999>";
+                s.Text = "1";
+                s.Properties.NullText = "1";
+                s.Properties.ClientSideEvents.KeyUp = "onIntervalChanged";
+                s.Properties.EnableClientSideAPI = true;
+                s.Properties.ClientInstanceName= "IntervalValue";
+            });
+        });
+        g.Items.Add(m => m.Job.StartTime, i =>
+        {
+            i.NestedExtension().DateEdit(d =>
+            {
+                d.Properties.DisplayFormatString = "dd/MM/yyyy HH:mm";
+                d.Properties.EditFormatString= "dd/MM/yyyy HH:mm";
+                d.Properties.UseMaskBehavior = true;
+                d.Properties.TimeSectionProperties.Visible = true;
+            });
+        });
+        g.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(()=>
+            {
+
+                ViewContext.Writer.Write("Bu iş ");
+                Html.DevExpress().Label(l =>
+                {
+                    l.Name = "lblJobInterval";
+                    l.Properties.EnableClientSideAPI = true;
+                    l.ControlStyle.Font.Bold = true;
+                    l.Text = Model.Job.Interval > 0 ? Model.Job.Interval.ToString() : "#";
+                }).GetHtml();
+
+                ViewContext.Writer.Write("  ");
+                Html.DevExpress().Label(l =>
+                {
+                    l.Name = "lblJobIntervalType";
+                    l.Properties.EnableClientSideAPI = true;
+                    l.ControlStyle.Font.Bold = true;
+                    l.Text = Model.Job.IntervalType > 0 ? Model.Job.IntervalType.ToString() : "#";
+                }).GetHtml();
+
+
+                ViewContext.Writer.Write(" de 1 defa çalışacaktır ");
+            });
+        });
+        g.Items.Add(m => m.Job.Active, i =>
+        {
+            i.NestedExtension().CheckBox(d =>
+            {
+                d.Checked = Model.Job.Active;
+            });
+        });
+        g.Items.Add(m => m.Job.MessageChannels, i =>
+        {
+            i.Caption = "Gönderim Kanalları";
+            i.Paddings.PaddingTop = 12;
+            i.Paddings.PaddingBottom = 12;
+            i.NestedExtension().CheckBoxList(setCheckBox =>
+            {
+                var messageChannels= KepNotificationDev.Models.MessageChannel.GetMessageChannels();
+                setCheckBox.Name = "cbReceiverChannels";
+                setCheckBox.Properties.DataSource = messageChannels;
+                setCheckBox.Properties.ValueField = "Id";
+                setCheckBox.Properties.TextField = "ChannelCaption";
+                //setCheckBox.Properties.ValueType = typeof(KepNotificationDev.Models.MessageChannels);
+                //setCheckBox.Properties.DataSource = Enum.GetNames(typeof(KepNotificationDev.Models.MessageChannels));
+
+                setCheckBox.Properties.RepeatLayout = RepeatLayout.Flow;
+                setCheckBox.Properties.RepeatDirection = RepeatDirection.Vertical;
+                setCheckBox.Properties.RepeatColumns = 6;
+                setCheckBox.PreRender += (s, e) =>
+                {
+                    var chc = (MVCxCheckBoxList)s;
+                    //if (Model.Job.MessageChannels.HasAnyValue())
+                    {
+                        for (int j = 1,k=0; j <= KepNotificationDev.Models.MessageChannel.GetMessageChannelsMaxId(); j *= 2,k++)
+                        {
+                            chc.Items[k].Selected = Model.Job.MessageChannels.HasFlag((KepNotificationDev.Models.MessageChannels)j);
+                        }
+                    }
+                };
+            });
+
+        });
+        g.Items.Add(m => m.Job.AutoSend, i =>
+        {
+            i.NestedExtension().CheckBox(d =>
+            {
+                d.Checked = Model.Job.AutoSend;
+            });
+        });
+        g.Items.Add(m => m.Job.RelevantAddress, i =>
+        {
+            i.NestedExtension().TextBox(t =>
+            {
+                AssignTextBoxSettings(t);
+            });
+        });
+        //g.Items.Add(m => m.Job.RelevantPhone, i =>
+        //{
+        //    i.NestedExtension().TextBox(t =>
+        //    {
+        //    });
+        //});
+    });
+    settings.Items.AddGroupItem(g =>
+    {
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.ShowCaption = DefaultBoolean.False;
+        g.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+        g.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.SetNestedContent(() =>
+            {
+                Html.DevExpress().Button(b =>
+                {
+                    b.Name = "btnJobEditPost";
+                    b.Text = "Kaydet";
+                    b.UseSubmitBehavior = true;
+                }).GetHtml();
+            });
+        });
+
+    });
+
+}).GetHtml()
+}
+

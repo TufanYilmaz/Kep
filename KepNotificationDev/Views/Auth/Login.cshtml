@@ -1,0 +1,25 @@
+﻿@model KepNotificationDev.Models.User
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+@using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "login-form" }))
+{ 
+    <div class="login-wrap">
+        <p class="login-img"> <img src="~/Assets/img/AbysisLogoTransparent.png" width="143" height="49" /> </p>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="icon_profile"></i></span>
+            @*<input type="text" class="form-control" placeholder="Kullanıcı" autofocus>*@
+           @Html.TextBoxFor(m=>Model.Username,new { @class="form-control", placeholder="Kullanıcı" })
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+            @Html.PasswordFor(m => Model.Password, new { @class = "form-control", placeholder = "Parola" })
+        </div>
+        @*<label class="checkbox">
+            @Html.CheckBoxFor(m => Model.Checked, new { @class = "form-control", placeholder = "Parola" })
+        </label>*@
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Giriş</button>
+    </div>
+}

@@ -1,0 +1,11 @@
+﻿@model List<string>
+@Html.DevExpress().RoundPanel(settings =>
+{
+        settings.Name = "roundPanel";
+        settings.ShowHeader = true;
+        settings.View = DevExpress.Web.View.Standard;
+        settings.Width = Unit.Percentage(100);
+        settings.HeaderText = Model[0];
+
+        settings.SetContent(@Model[1]);
+    }).GetHtml()

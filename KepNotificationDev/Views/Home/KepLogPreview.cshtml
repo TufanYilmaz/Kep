@@ -1,0 +1,230 @@
+﻿@model KepNotificationDev.Models.KepLogPreview
+
+<script>
+    function SelectedAttachmentChanged(s, e) {
+        //$('#lblAttachmentData').html(s.GetValue());
+        var selecteds = s.GetSelectedItems();
+        var selectedText = selecteds[0].text;
+        //console.log(selectedText);
+        if (selectedText.endsWith(".pdf")) {
+            //console.log("pdf Dosyası");
+            $('#lblAttachmentData').html('<iframe src="data:application/pdf;base64,' + s.GetValue() + '"></iframe>');
+            var itemImage = AttachmentFormLayout.GetItemByName("AttachImageContainer");
+            var itemPdf = AttachmentFormLayout.GetItemByName("AttachPdfContainer");//AttachPdfContainer
+            itemPdf.SetVisible(true);
+            itemImage.SetVisible(false);
+        } else {
+            //console.log("resim Dosyası");
+            //$('#lblAttachmentData').html('<img src="data:image/*;base64,' + s.GetValue() + '"/>');
+            //console.log(AttachImage);//.GetMainElement().src = 'data:image/*;base64,' + s.GetValue();
+            var itemImage = AttachmentFormLayout.GetItemByName("AttachImageContainer");//AttachPdfContainer
+            var itemPdf = AttachmentFormLayout.GetItemByName("AttachPdfContainer");//AttachPdfContainer
+            itemPdf.SetVisible(false);
+            itemImage.SetVisible(true);
+            AttachImage.src = 'data:image/*;base64,' + s.GetValue();
+        }
+
+        //lblAttachmentData.SetText("deneme");
+    }
+
+
+    function OpenAttachmentClick(s, e) {
+        var attachemtbase64 = lbAttachments.GetValue();
+        var selectedItem = lbAttachments.GetSelectedItems();
+        
+
+
+        if (selectedItem.length > 0) {
+            lblAttachmentInfo.SetText("");
+            selectedText = selectedItem[0].text;
+            var win = window.open("#", "_blank");
+            var title = selectedText;
+            win.document.write('<html><title>' + title + '</title><body style="margin-top: 0px; margin - left: 0px; margin - right: 0px; margin - bottom: 0px; ">');
+
+            if (selectedText.endsWith(".pdf")) {
+                var objbuilder = '';
+                objbuilder += ('<object width="100%" height="100%" data = "data:application/pdf;base64,');
+                objbuilder += (attachemtbase64);
+                objbuilder += ('" type="application/pdf" class="internal">');
+                objbuilder += ('<embed src="data:application/pdf;base64,');
+                objbuilder += (attachemtbase64);
+                objbuilder += ('" type="application/pdf"  />');
+                objbuilder += ('</object>');
+
+                win.document.write(objbuilder);
+                win.document.write('</body></html>');
+                layer = jQuery(win.document);
+            } else {
+                var image = new Image();
+                image.src = "data:image/jpg;base64," + attachemtbase64;
+                image.alt = selectedText;
+                image.text = selectedText;
+
+                win.document.write(image.outerHTML);
+                win.document.write('</body></html>');
+            }
+        } else {
+            lblAttachmentInfo.SetText("Lütfen eklenti seçiniz");
+        }
+
+        
+    }
+
+</script>
+@{
+    if (Model.Attachments.Count > 0)
+    {
+        Html.DevExpress().FormLayout(settings =>
+        {
+            settings.Name = "AttachmentFormLayout";
+            settings.Width = Unit.Percentage(100);
+            var groupItem = settings.Items.AddGroupItem(groupSettings =>
+            {
+                groupSettings.Caption = "Ekteki Dosyalar";
+                groupSettings.Width = Unit.Percentage(100);
+                groupSettings.ColumnCount = 2;
+            });
+            groupItem.GridSettings.StretchLastItem = DefaultBoolean.True;
+            groupItem.GridSettings.Breakpoints.Add(new LayoutBreakpoint() { Name = "S", ColumnCount = 1, MaxWidth = 500 });
+            groupItem.Items.Add(i =>
+            {
+
+                i.ShowCaption = DefaultBoolean.False;
+                i.SpanRules.Add(new SpanRule() { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+                //i.NestedExtension().ListBox(lb =>
+                //{
+                //    lb.Name = "lbAttachments";
+                //    lb.Width = 285;
+                //    lb.Height = 100;
+                //    lb.Properties.Caption = "";
+                //    lb.Properties.CaptionSettings.Position = EditorCaptionPosition.NotSet;
+                //    lb.Properties.SelectionMode = ListEditSelectionMode.Single;
+                //    lb.Properties.EnableSelectAll = false;
+                //    lb.Properties.ValueField = "DataBase64";
+                //    lb.Properties.ValueType = typeof(string);
+                //    lb.Properties.TextField = "Code";
+                //    lb.Properties.ClientSideEvents.SelectedIndexChanged = "SelectedAttachmentChanged";
+                //    lb.Width = Unit.Percentage(100);
+                //    lb.Properties.DataSource = Model.Attachments;
+                //});
+                i.SetNestedContent(() =>
+                {
+                    Html.DevExpress().ListBox(lb =>
+                    {
+                        lb.Name = "lbAttachments";
+                        lb.Width = 285;
+                        lb.Height = 100;
+                        lb.Properties.Caption = "";
+                        lb.Properties.CaptionSettings.Position = EditorCaptionPosition.NotSet;
+                        lb.Properties.SelectionMode = ListEditSelectionMode.Single;
+                        lb.Properties.EnableSelectAll = false;
+                        lb.Properties.ValueField = "DataBase64";
+                        lb.Properties.ValueType = typeof(string);
+                        lb.Properties.TextField = "Code";
+                        lb.Properties.ClientSideEvents.SelectedIndexChanged = "SelectedAttachmentChanged";
+                        lb.Width = Unit.Percentage(100);
+                        //lb.Properties.DataSource = Model.Attachments;
+                    }).BindList(Model.Attachments).Render();
+
+                    Html.DevExpress().Button(b =>
+                    {
+                        b.Name = "btnOpenAttachmentNewWindow";
+                        b.Text = "Aç";
+                        b.UseSubmitBehavior = false;
+                        b.ClientSideEvents.Click = "OpenAttachmentClick";
+
+                    }).Render();
+                    Html.DevExpress().Label(l =>
+                    {
+                        l.Name = "lblAttachmentInfo";
+                        l.Properties.EnableClientSideAPI = true;
+                    }).Render();
+                });
+            });
+            groupItem.Items.Add(i =>
+            {
+                i.Name = "AttachImageContainer";
+                i.ShowCaption = DefaultBoolean.False;
+                i.NestedExtension().BinaryImage(biSettings =>
+                {
+                    biSettings.Width = Unit.Pixel(200);
+                    biSettings.Height = Unit.Pixel(200);
+                    biSettings.Properties.ImageSizeMode =ImageSizeMode.ActualSizeOrFit;
+                    biSettings.Name = "AttachImage";
+                    biSettings.Width = Unit.Percentage(100);
+                    //biSettings.Properties.EditingSettings;
+                });
+                i.SpanRules.Add(new SpanRule() { BreakpointName = "S", ColumnSpan = 1 });
+            });
+            groupItem.Items.Add(i =>
+            {
+                i.Name = "AttachPdfContainer";
+                i.ShowCaption = DefaultBoolean.False;
+                i.NestedExtension().Label(l =>
+                {
+                    l.Name = "lblAttachmentData";
+                });
+            });
+
+        }).GetHtml();
+
+        //Html.DevExpress().ListBox(settings =>
+        //{
+        //    settings.Name = "lbAttachments";
+        //    settings.Width = 285;
+        //    settings.Height = 100;
+        //    settings.Properties.Caption = "";
+        //    settings.Properties.CaptionSettings.Position = EditorCaptionPosition.NotSet;
+        //    settings.Properties.SelectionMode = ListEditSelectionMode.Single;
+        //    settings.Properties.EnableSelectAll = false;
+        //    settings.Properties.ValueField = "DataBase64";
+        //    settings.Properties.ValueType = typeof(string);
+        //    settings.Properties.TextField = "Code";
+        //    settings.Properties.ClientSideEvents.SelectedIndexChanged = "SelectedAttachmentChanged";
+        //    //settings.Properties.ClientSideEvents.SelectedIndexChanged = "FeaturesSelectionChanged";
+        //}).BindList(Model.Attachments).GetHtml();
+        //Html.DevExpress().Label(l =>
+        //{
+        //    l.Name = "lblAttachmentData";
+        //}).GetHtml();
+    }
+
+    if (!string.IsNullOrEmpty(Model.LastKepState))
+    {
+        Html.DevExpress().Label(l =>
+        {
+            l.Name = "lblKepStatusInfo";
+            l.Text = Model.LastKepState;
+        }).GetHtml();
+    }
+    try
+    {
+        if (!string.IsNullOrEmpty(((List<string>)Model.CONTENT)[1]))
+        {
+            Html.RenderPartial("KepLogRoundPanelPreviewPartial", ((List<string>)Model.CONTENT));
+        }
+    }
+    catch (Exception ex)
+    {
+        Html.RenderPartial("KepLogPreviewPartial", Model.CONTENT);
+    }
+    //   Html.RenderPartial("", Model.CONTENT);
+}
+
+@*@if (Model.Attachments.Count > 0)
+{
+
+    <script>
+    attachments = [];
+
+    </script>
+
+    @foreach (var item in @Model.Attachments)
+    {
+        <script>
+            attachments.push(@item.Data.ToString());
+
+        </script>
+
+    }
+}*@

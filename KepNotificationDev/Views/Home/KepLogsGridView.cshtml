@@ -1,0 +1,64 @@
+﻿@model List<KepNotificationDev.Models.MessageLog>
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "gvKepLogs";
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "KepLogGridViewPartial" };
+    settings.Width = Unit.Percentage(100);
+    settings.Height = Unit.Pixel(790);
+    settings.KeyFieldName = "Id";
+    var rt=settings.Columns.Add("RefType");
+    rt.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.DatasetType>.GetNames();
+        cb.DropDownStyle = DropDownStyle.DropDown;
+        cb.ValueType = typeof(string);
+    });
+    settings.Columns.Add("RefCode");
+    settings.Columns.Add("RefInfo");
+    var clmnMessageChannel = settings.Columns.Add("MessageChannelCode");
+    clmnMessageChannel.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Models.MessageChannels>.GetDisplayValues();
+        cb.ValueType = typeof(string);
+        cb.DropDownStyle = DropDownStyle.DropDown;
+    });
+    settings.Columns.Add("Receiver");
+    settings.Columns.Add("Subject");
+    var sc = settings.Columns.Add("StatusCode");
+    sc.EditorProperties().ComboBox(cb =>
+    {
+        cb.DataSource =
+        KepNotificationDev.Helpers.EnumHelper<KepNotificationDev.Helpers.Service.JobStatus>.GetDisplayValues();
+        cb.ValueType = typeof(string);
+        cb.DropDownStyle = DropDownStyle.DropDown;
+    });
+
+    settings.Columns.Add("CreatedDate").SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+    settings.Columns.Add("TemplateId").SetColVisible(false);
+    settings.Columns.Add("RefId").SetColVisible(false);
+
+
+
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowSelectCheckbox = true;
+    settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+
+    settings.SettingsPager.Visible = true;
+    settings.SettingsPager.PageSize = 15;
+
+    settings.SettingsBehavior.AllowAutoFilter = true;
+    settings.SettingsBehavior.AllowHeaderFilter = true;
+
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowFilterRowMenu = true;
+    settings.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.SettingsBehavior.AllowSort = true;
+
+    settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+    settings.ClientSideEvents.SelectionChanged = "onSelectedChange";
+
+}).Bind(Model).GetHtml()

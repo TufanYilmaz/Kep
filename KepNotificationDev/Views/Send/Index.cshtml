@@ -1,0 +1,255 @@
+﻿@model KepNotificationDev.Models.ViewModels.SenderViewModel
+@{
+    ViewBag.Title = "Kep Gönderim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function OnCloseRecieverSelected(s, e) {
+        var dataset = cmbDataset.GetValue();
+        if (dataset == null || dataset == "" || dataset === "") {
+            return;
+        }
+        MyMailMessage_Recievers.GetGridView().PerformCallback();
+        selectedSubs = [];
+        cmbReport.PerformCallback();
+        OnTemplatesButtonClick(null, null);
+        cmbDepartment.SetValue("");
+        //cbReceiverChannels_RB0  //2 3 5  --  
+        
+        if (dataset.includes("Abone")) {
+            $('#cbReceiverChannels_RB' + 0).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 1).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 2).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 3).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 4).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 5).css("visibility", "visible");
+        }
+        else if (dataset.includes("Firma")) {
+            $('#cbReceiverChannels_RB' + 0).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 1).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 2).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 3).css("visibility", "visible");
+            $('#cbReceiverChannels_RB' + 4).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 5).css("visibility", "visible");
+        }
+        else {
+            $('#cbReceiverChannels_RB' + 0).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 1).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 2).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 3).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 4).css("visibility", "hidden");
+            $('#cbReceiverChannels_RB' + 5).css("visibility", "hidden");
+        }
+    }
+
+
+    function OnSelectedIndexChangedTemplates(s, e) {
+        if (selectedSubs.length == 0) {
+            alert("Öncelikle en az 1 tane Alıcı seçmeniz gerekmektedir");
+            s.SetValue("");
+        } else {
+            $.ajax({
+                url: '/Home/KepLogPreviewPartial',
+                data: { "logId": 0, "templateId": s.GetValue(), "subId": selectedSubs[0] },
+                type: 'GET',
+                success: function (data) {
+                    $('#divViewer').html(data);
+                }
+            });
+        }
+    }
+
+    function CloseGridLookup() {
+        MyMailMessage_Recievers.ConfirmCurrentSelection();
+        MyMailMessage_Recievers.HideDropDown();
+    }
+    function OnTemplatesButtonClick(s, e) {
+        cmbReport.SetValue("");
+        $.ajax({
+            url: '/Send/KepBodyHtmlEditorPartial',
+            type: 'GET',
+            success: function (data) {
+                $('#divViewer').html(data);
+            }
+        });
+    }
+    function OnRecieversButtonClick(s, e) {
+        s.SetValue(0);
+    }
+    var selectedSubs = new Array();
+    function SubscibersSelected(s, e) {
+        var users = s.GetValue();
+        selectedSubs = users;
+    }
+
+    function OnFormSubmit() {
+        var fileList = $("#ucMultiSelection_FileList li").length;
+        console.log(fileList);
+        var value = $("#MyMailMessage\\.Subject_I").val();
+        console.log(value);
+
+        if (selectedSubs.length <= 0 || value == "") {
+            alert("Lütfen alıcı seçiniz veya Konu giriniz.");
+        }
+        else {
+            if (fileList > 1) {
+                console.log("Upload");
+                ucMultiSelection.Upload();
+            } else {
+                FormSubmit(null, null);
+            }
+        }
+    }
+
+    function FormSubmit(s, e) {
+        console.log("Submit");
+        var form = $("#ManuelForm");
+        form.submit();
+    }
+</script>
+
+<h3>El ile oluştur</h3>
+@*@Html.Partial("ReceiverDataSourcePartial")
+@Html.Partial("RecieverDepartmentPartial")*@
+
+@using (Html.BeginForm("Sender", "Send", FormMethod.Post, new { @class = "form-horizontal",name= "ManuelForm", id="ManuelForm" }))
+{
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "formKepSender";
+    s.Width = Unit.Percentage(100);
+    s.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+
+    s.Items.Add(i =>
+    {
+        i.Caption = "Alıcı Seti";
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("ReceiverDataSourcePartial");
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "Birim";
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("RecieverDepartmentPartial");
+        });
+    });
+
+
+    s.Items.Add(m => m.MyMailMessage.Recievers, i =>
+    {
+        i.Width = Unit.Percentage(100);
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("RecieverSelectPartial", Model.Receivers);
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "Raporlar";
+
+        i.SetNestedContent(() =>
+        {
+            Html.RenderPartial("TemplatePartial", Model.Templates);
+        });
+    });
+    s.Items.Add(m => m.MyMailMessage.Subject, i =>
+    {
+
+        i.NestedExtension().TextBox(t =>
+        {
+            t.Properties.ValidationSettings.Display = Display.Dynamic;
+            t.ShowModelErrors = true;
+        });
+    });
+    s.Items.Add(i =>
+    {
+        i.Caption = "Eklenti";
+        i.Paddings.PaddingTop = 12;
+        i.SetNestedContent(() =>
+        {
+            Html.DevExpress().UploadControl(set =>
+            {
+                set.Name = "ucMultiSelection";
+
+                set.Width = Unit.Percentage(100);
+                set.ShowProgressPanel = false;
+                set.ShowUploadButton = false;
+                set.AdvancedModeSettings.EnableMultiSelect = true;
+                set.AdvancedModeSettings.EnableFileList = true;
+                set.AdvancedModeSettings.EnableDragAndDrop = true;
+                set.NullText = "Eklenti Dosyalarını Seçebilirsiniz...";
+                set.BrowseButton.Text = "Dosya Ekle...";
+                set.UploadButton.Text = "Seçili dosyaları yükle.";
+
+                set.ShowAddRemoveButtons = true;
+                set.RemoveButton.Text = "Kaldır";
+                set.ValidationSettings.Assign(KepNotificationDev.Helpers.UploadContolHelper.UploadValidationSettings);
+                set.ClientSideEvents.FileUploadComplete = "function(s,e){console.log('UploadComleted');  window.location.href = '/Send/Index';}";
+            }).GetHtml();
+        });
+    });
+    s.Items.Add(m => m.ReceiverChannels, i =>
+    {
+        i.Caption = "Gönderim Kanalları";
+        i.Paddings.PaddingTop = 12;
+        i.Paddings.PaddingBottom = 12;
+        i.NestedExtension().CheckBoxList(setCheckBox =>
+        {
+            setCheckBox.Name = "cbReceiverChannels";
+            //setCheckBox.Properties.ValueType = typeof(KepNotificationDev.Helpers.Service.MessageChannels);
+            //setCheckBox.Properties.DataSource = Enum.GetNames(typeof(KepNotificationDev.Helpers.Service.MessageChannels));
+            //setCheckBox.Properties.DataSource = Enum.GetNames(typeof(KepNotificationDev.Helpers.Service.MessageChannels));
+            setCheckBox.Properties.DataSource = KepNotificationDev.Models.MessageChannel.GetMessageChannels();
+            setCheckBox.Properties.ValueField = "Id";
+            setCheckBox.Properties.TextField = "ChannelCaption";
+
+            setCheckBox.Properties.RepeatLayout = RepeatLayout.Flow;
+            setCheckBox.Properties.RepeatDirection = RepeatDirection.Vertical;
+            setCheckBox.Properties.RepeatColumns = 6;
+        });
+        //i.SetNestedContent(()=>
+        //{
+        //  lbSet.Properties.ValueType = typeof(AbysisData.Core.InvPeriods);
+        //lbSet.Properties.DataSource = Enum.GetNames(typeof(AbysisData.Core.InvPeriods));
+        //});
+    });
+    s.Items.Add(m => m.MyMailMessage.AutoSend, i =>
+    {
+        i.Caption = "Otomatik Gönder";
+        i.NestedExtension().CheckBox(checkBox =>
+        {
+            checkBox.Name = "cbAutoSend";
+        });
+
+    });
+
+    s.Items.Add(m => m.MyMailMessage.Body, i =>
+    {
+        i.Caption = "İçerik";
+        i.Paddings.PaddingTop = 24;
+        i.SetNestedContent(() =>
+        {
+
+            ViewContext.Writer.Write("<div class=\"divViewer\" id=\"divViewer\">");
+            Html.RenderPartial("_KepBodyHtmlEditorPartial", Model);
+            ViewContext.Writer.Write("</div>");
+        });
+    });
+    s.Items.Add(item =>
+    {
+        item.Caption = "";
+        item.NestedExtension().Button(b =>
+        {
+            b.Name = "Submit2";
+            b.Text = "İleti Oluştur";
+            b.ClientSideEvents.Click = "OnFormSubmit";
+            b.UseSubmitBehavior = false;
+        });
+    });
+}).GetHtml();
+    }
+
+

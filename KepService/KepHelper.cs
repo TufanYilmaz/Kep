@@ -32,7 +32,7 @@ namespace KepService
             {
                 islemYetkiliKodu = "001",
                 kullaniciAdi = "merkez.test@kep.turkkep.com.tr",
-                kullaniciSifresi = "My6031*+"
+                kullaniciSifresi = ""
             };
             var base64EML = Convert.ToBase64String(Encoding.UTF8.GetBytes(EMLKepIletisi));
 
@@ -81,7 +81,7 @@ namespace KepService
             {
                 islemYetkiliKodu = "001",
                 kullaniciAdi = "merkez.test@kep.turkkep.com.tr",
-                kullaniciSifresi = "My6031*+"
+                kullaniciSifresi = ""
             };
             var base64EML = Convert.ToBase64String(Encoding.UTF8.GetBytes(EMLKepIletisi));
 

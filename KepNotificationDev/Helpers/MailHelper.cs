@@ -7,8 +7,8 @@ namespace KepNotificationDev.Helpers
 {
     public static class MailHelper
     {
-        public static string MailAddress { get; set; } = "merkezdebug@gmail.com";
-        public static string Password { get; set; } = "My6031*+";
+        public static string MailAddress { get; set; } = "debug@gmail.com";
+        public static string Password { get; set; } = "";
         public static string SMTP { get; set; } = "smtp.gmail.com";
         public static int Port { get; set; } = 465;
         //public static bool? UseSSL = false;

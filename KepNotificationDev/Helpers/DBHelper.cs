@@ -29,7 +29,6 @@ namespace KepNotificationDev.Helpers
     //}
     public static class DBHelper
     {
-        //static readonly SqlConnection conn = new SqlConnection("Server=192.168.2.240; Database=ABYSIS_DB1;user id=abysis; password=My6031*+");
         static readonly string connString = ConfigurationManager.ConnectionStrings["AbysisDbConn"].ToString();
         public static IEnumerable<Job> GetJobs()
         {
